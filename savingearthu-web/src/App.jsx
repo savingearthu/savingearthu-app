@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const API_URL      = "https://script.google.com/macros/s/AKfycbyzE7WdVzzrdS7PhzyvponsP9wvtSxI9EroRozP12vVeCLtC1RPe_Rx1bKOORnxkzEy/exec";
 const LOGO_URL     = "https://cdn.imweb.me/upload/S20230420b05ab2cbf2d03/17b01aa6bd13a.png";
@@ -7,8 +7,6 @@ const RECYCLE_URL  = "https://savingearthu.org/actions/?q=YToxOntzOjEyOiJrZXl3b3
 const HOME_URL     = "https://savingearthu.org/";
 const INSTA_URL    = "https://www.instagram.com/savingearthu/";
 const MAP_URL      = "https://map.naver.com/p/favorite/myPlace/folder/11dff33693824487b7ff9cfcadea7c8c?c=15.00,0,0,0,dh";
-const TEACHER_IMG  = "/teacher.jpg";
-const PAPER_IMG    = "/jigucafe_bg.jpg";
 const GREEN = "#00a54f";
 const BLUE  = "#00aeef";
 
@@ -78,7 +76,7 @@ function HomeScreen() {
     }}>
       <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
 
-      <div style={{ width:"100%", position:"relative", zIndex:100 }}>
+      <div style={{ width:"100%", maxWidth:400, position:"relative", zIndex:100 }}>
         <button
           onClick={() => setOpen(o => !o)}
           style={{
@@ -90,7 +88,7 @@ function HomeScreen() {
         >
           <span style={{ display:"flex", alignItems:"center", gap:10 }}>
             <span className="material-symbols-outlined" style={{ fontSize:20, color:"#fff" }}>search</span>
-            <span style={{ fontSize:15, color:"#fff", fontWeight:600, fontFamily:"Pretendard, sans-serif" }}>지구 카페 찾기</span>
+            <span style={{ fontSize:15, color:"#fff", fontWeight:600 }}>지구 카페 찾기</span>
           </span>
           <span className="material-symbols-outlined" style={{
             fontSize:20, color:"rgba(255,255,255,0.8)",
@@ -101,10 +99,7 @@ function HomeScreen() {
 
         {open && (
           <>
-            <div
-              style={{ position:"fixed", inset:0, zIndex:99 }}
-              onClick={() => setOpen(false)}
-            />
+            <div style={{ position:"fixed", inset:0, zIndex:99 }} onClick={() => setOpen(false)}/>
             <div style={{
               position:"absolute", top:"calc(100% + 8px)", left:0, right:0,
               background:"#fff", borderRadius:16,
@@ -115,8 +110,6 @@ function HomeScreen() {
             }}>
               {loading ? (
                 <p style={{ padding:"1rem", textAlign:"center", fontSize:13, color:"#ccc" }}>로딩 중...</p>
-              ) : cafes.length === 0 ? (
-                <p style={{ padding:"1rem", textAlign:"center", fontSize:13, color:"#ccc" }}>카페 목록이 없어요</p>
               ) : cafes.map((cafe, i) => (
                 <div key={cafe.id}
                   onClick={() => select(cafe)}
@@ -125,12 +118,11 @@ function HomeScreen() {
                     fontSize:14, color:"#222",
                     borderBottom: i < cafes.length-1 ? "1px solid #f5f5f5" : "none",
                     display:"flex", alignItems:"center", gap:10,
-                    fontFamily:"Pretendard, sans-serif",
                   }}
                   onMouseEnter={e => e.currentTarget.style.background="#f5f5f5"}
                   onMouseLeave={e => e.currentTarget.style.background="#fff"}
                 >
-                  <span style={{ width:6, height:6, borderRadius:"50%", background: BLUE, flexShrink:0, display:"inline-block" }}/>
+                  <span style={{ width:6, height:6, borderRadius:"50%", background:BLUE, flexShrink:0, display:"inline-block" }}/>
                   {cafe.name}
                 </div>
               ))}
@@ -148,6 +140,31 @@ function HomeScreen() {
 
 // ── 카페 상세 페이지 ──────────────────────────────────────────────────────────
 function CafePage({ data }) {
+  const sheetRef = useRef(null);
+  const startY   = useRef(0);
+  const startTop = useRef(0);
+  const VH       = typeof window !== "undefined" ? window.innerHeight : 800;
+  const PHOTO_H  = 260;
+  const MIN_TOP  = 60;   // 완전히 덮인 상태
+  const MAX_TOP  = VH - 160; // 살짝 보이는 상태
+
+  const [sheetTop, setSheetTop] = useState(PHOTO_H - 24);
+
+  function onTouchStart(e) {
+    startY.current   = e.touches[0].clientY;
+    startTop.current = sheetTop;
+  }
+
+  function onTouchMove(e) {
+    const dy  = e.touches[0].clientY - startY.current;
+    const next = Math.min(MAX_TOP, Math.max(MIN_TOP, startTop.current + dy));
+    setSheetTop(next);
+  }
+
+  function onTouchEnd() {
+    const mid = (MIN_TOP + PHOTO_H) / 2;
+    setSheetTop(sheetTop < mid ? MIN_TOP : PHOTO_H - 24);
+  }
 
   function share() {
     if (navigator.share) {
@@ -158,10 +175,12 @@ function CafePage({ data }) {
     }
   }
 
-  const FLOW = [
-    { icon:"local_cafe",         label:"카페"   },
-    { icon:"local_shipping",     label:"지소행" },
-    { icon:"factory",            label:"제지사" },
+  const FLOW_ROW1 = [
+    { icon:"local_cafe",     label:"카페"   },
+    { icon:"local_shipping", label:"지소행" },
+    { icon:"factory",        label:"제지사" },
+  ];
+  const FLOW_ROW2 = [
     { icon:"recycling",          label:"재생지" },
     { icon:"volunteer_activism", label:"전달"   },
   ];
@@ -173,14 +192,14 @@ function CafePage({ data }) {
   ];
 
   return (
-    <div style={{ minHeight:"100vh", background:"#fff" }}>
+    <div style={{ width:"100%", height:"100vh", overflow:"hidden", position:"relative", background:"#fff" }}>
 
       {/* 상단 종이팩 사진 */}
-      <div style={{ width:"100%", height:220, position:"relative", overflow:"hidden", background:"#eee" }}>
+      <div style={{ position:"absolute", top:0, left:0, right:0, height:PHOTO_H, overflow:"hidden", background:"#e8e8e8" }}>
         <img
-          src={PAPER_IMG} alt="종이팩"
+          src="지구카페 배경.JPG"
+          alt="종이팩"
           style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}
-          onError={e => { e.target.style.display = "none"; }}
         />
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.25))" }}/>
         <a href="/" style={{
@@ -193,87 +212,112 @@ function CafePage({ data }) {
         </a>
       </div>
 
-      {/* 바텀 시트 */}
-      <div style={{
-        background:"#fff", borderRadius:"20px 20px 0 0",
-        marginTop:-20, position:"relative",
-        padding:"14px 20px 48px",
-      }}>
-        <div style={{ width:32, height:4, background:"#e8e8e8", borderRadius:2, margin:"0 auto 18px" }}/>
+      {/* 바텀 시트 - 드래그 가능 */}
+      <div
+        ref={sheetRef}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        style={{
+          position:"absolute", left:0, right:0,
+          top: sheetTop,
+          bottom: 0,
+          background:"#fff",
+          borderRadius:"20px 20px 0 0",
+          boxShadow:"0 -4px 24px rgba(0,0,0,0.1)",
+          overflowY:"auto",
+          transition:"top 0.3s ease",
+          padding:"12px 20px 48px",
+        }}
+      >
+        {/* 핸들 */}
+        <div style={{ width:36, height:4, background:"#ddd", borderRadius:2, margin:"0 auto 18px", cursor:"grab" }}/>
 
         {/* 태그 */}
         <div style={{ textAlign:"center", marginBottom:8 }}>
           <span style={{
             display:"inline-block", background:"#e8f5ee",
             borderRadius:20, padding:"3px 14px",
-            fontSize:11, color: GREEN, fontWeight:600,
+            fontSize:11, color:GREEN, fontWeight:600,
           }}>2025년부터 함께하는 지구카페</span>
         </div>
 
         {/* 카페 이름 */}
-        <h1 style={{
-          fontSize:28, fontWeight:800, color:"#0a1a2e",
-          lineHeight:1.2, marginBottom:20, textAlign:"left",
-          fontFamily:"Pretendard, sans-serif",
-        }}>
+        <h1 style={{ fontSize:26, fontWeight:800, color:"#0a1a2e", lineHeight:1.2, marginBottom:18, textAlign:"left" }}>
           {data.cafe}
         </h1>
 
         {/* 통계 */}
         <div style={{ display:"flex", gap:8, marginBottom:20 }}>
           {STATS.map((s,i) => (
-            <div key={i} style={{
-              flex:1, background:"#f0faf4", borderRadius:14,
-              padding:"12px 4px", textAlign:"center",
-            }}>
-              <span className="material-symbols-outlined" style={{ fontSize:22, color: GREEN, display:"block", marginBottom:4 }}>{s.icon}</span>
-              <p style={{ fontSize:17, fontWeight:800, color: GREEN, fontFamily:"Pretendard, sans-serif" }}>{s.value}</p>
-              <p style={{ fontSize:10, color:"#bbb", fontFamily:"Pretendard, sans-serif" }}>{s.unit}</p>
-              <p style={{ fontSize:10, color:"#999", marginTop:2, fontFamily:"Pretendard, sans-serif" }}>{s.label}</p>
+            <div key={i} style={{ flex:1, background:"#f0faf4", borderRadius:14, padding:"12px 4px", textAlign:"center" }}>
+              <span className="material-symbols-outlined" style={{ fontSize:22, color:GREEN, display:"block", marginBottom:4 }}>{s.icon}</span>
+              <p style={{ fontSize:17, fontWeight:800, color:GREEN }}>{s.value}</p>
+              <p style={{ fontSize:10, color:"#bbb" }}>{s.unit}</p>
+              <p style={{ fontSize:10, color:"#999", marginTop:2 }}>{s.label}</p>
             </div>
           ))}
         </div>
 
-        {/* 자원순환 구조 */}
-        <p style={{ fontSize:13, fontWeight:700, color:"#0a1a2e", marginBottom:10, textAlign:"center", fontFamily:"Pretendard, sans-serif" }}>자원순환 구조</p>
-        <div style={{ display:"flex", alignItems:"center", gap:2, marginBottom:20 }}>
-          {FLOW.map((f, i) => (
-            <div key={i} style={{ display:"flex", alignItems:"center", flex:1 }}>
-              <div style={{ flex:1, background:"#f0f9ff", borderRadius:10, padding:"8px 2px", textAlign:"center" }}>
-                <span className="material-symbols-outlined" style={{ fontSize:18, color: BLUE, display:"block", marginBottom:3 }}>{f.icon}</span>
-                <p style={{ fontSize:9, color:"#0a6a8a", lineHeight:1.3, wordBreak:"keep-all", fontFamily:"Pretendard, sans-serif" }}>{f.label}</p>
+        {/* 자원순환 구조 - 3개 + 2개 */}
+        <p style={{ fontSize:13, fontWeight:700, color:"#0a1a2e", marginBottom:10, textAlign:"center" }}>자원순환 구조</p>
+        <div style={{ marginBottom:20 }}>
+          {/* 1행: 3개 */}
+          <div style={{ display:"flex", alignItems:"center", gap:2, marginBottom:6 }}>
+            {FLOW_ROW1.map((f, i) => (
+              <div key={i} style={{ display:"flex", alignItems:"center", flex:1 }}>
+                <div style={{ flex:1, background:"#f0f9ff", borderRadius:10, padding:"8px 2px", textAlign:"center" }}>
+                  <span className="material-symbols-outlined" style={{ fontSize:18, color:BLUE, display:"block", marginBottom:3 }}>{f.icon}</span>
+                  <p style={{ fontSize:10, color:"#0a6a8a" }}>{f.label}</p>
+                </div>
+                {i < FLOW_ROW1.length-1 && (
+                  <span style={{ fontSize:14, color:BLUE, fontWeight:800, flexShrink:0, margin:"0 3px" }}>›</span>
+                )}
               </div>
-              {i < FLOW.length-1 && (
-                <span style={{ fontSize:14, color: BLUE, fontWeight:800, flexShrink:0, margin:"0 2px" }}>›</span>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
+          {/* 화살표 연결 */}
+          <div style={{ textAlign:"center", color:BLUE, fontWeight:800, fontSize:14, marginBottom:6 }}>↓</div>
+          {/* 2행: 2개 가운데 정렬 */}
+          <div style={{ display:"flex", alignItems:"center", gap:2, justifyContent:"center" }}>
+            {FLOW_ROW2.map((f, i) => (
+              <div key={i} style={{ display:"flex", alignItems:"center" }}>
+                <div style={{ width:90, background:"#f0f9ff", borderRadius:10, padding:"8px 2px", textAlign:"center" }}>
+                  <span className="material-symbols-outlined" style={{ fontSize:18, color:BLUE, display:"block", marginBottom:3 }}>{f.icon}</span>
+                  <p style={{ fontSize:10, color:"#0a6a8a" }}>{f.label}</p>
+                </div>
+                {i < FLOW_ROW2.length-1 && (
+                  <span style={{ fontSize:14, color:BLUE, fontWeight:800, flexShrink:0, margin:"0 3px" }}>›</span>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* 함께하는 사람들 */}
-        <p style={{ fontSize:13, fontWeight:700, color:"#0a1a2e", marginBottom:10, textAlign:"center", fontFamily:"Pretendard, sans-serif" }}>함께하는 사람들</p>
+        <p style={{ fontSize:13, fontWeight:700, color:"#0a1a2e", marginBottom:10, textAlign:"center" }}>함께하는 사람들</p>
         <div style={{ display:"flex", borderRadius:14, overflow:"hidden", border:"1px solid #eef2f8", marginBottom:20 }}>
           <div style={{ flex:1, background:"#f7fafe" }}>
             <img
-              src={TEACHER_IMG} alt="황무연 선생님"
+              src="DSCF6872_2.jpg"
+              alt="황무연 선생님"
               style={{ width:"100%", height:100, objectFit:"cover", objectPosition:"center top", display:"block" }}
-              onError={e => { e.target.style.display="none"; }}
             />
             <div style={{ padding:"10px 10px 12px", textAlign:"center" }}>
-              <p style={{ fontSize:11, fontWeight:700, color:"#0a1a2e", marginBottom:4, fontFamily:"Pretendard, sans-serif" }}>황무연 선생님</p>
-              <p style={{ fontSize:10, color:"#888", lineHeight:1.6, marginBottom:6, fontFamily:"Pretendard, sans-serif" }}>충무로 카페 종이팩을<br/>매일 수거하시는 분</p>
+              <p style={{ fontSize:11, fontWeight:700, color:"#0a1a2e", marginBottom:4 }}>황무연 선생님</p>
+              <p style={{ fontSize:10, color:"#888", lineHeight:1.6, marginBottom:6 }}>충무로 카페 종이팩을<br/>매일 수거하시는 분</p>
               <a href={INTERVIEW_URL} target="_blank" rel="noreferrer"
-                style={{ fontSize:10, fontWeight:700, color: BLUE, textDecoration:"none", fontFamily:"Pretendard, sans-serif" }}>지구인-터뷰 →</a>
+                style={{ fontSize:10, fontWeight:700, color:BLUE, textDecoration:"none" }}>지구인-터뷰 →</a>
             </div>
           </div>
           <div style={{ width:1, background:"#e8eef8", flexShrink:0 }}/>
           <div style={{ flex:1, background:"#f7fafe" }}>
             <div style={{ width:"100%", height:100, background:"#f0f0f0" }}/>
             <div style={{ padding:"10px 10px 12px", textAlign:"center" }}>
-              <p style={{ fontSize:11, fontWeight:700, color:"#0a1a2e", marginBottom:4, fontFamily:"Pretendard, sans-serif" }}>종이팩 다시쓰기</p>
-              <p style={{ fontSize:10, color:"#888", lineHeight:1.6, marginBottom:6, fontFamily:"Pretendard, sans-serif" }}>재생 휴지로 태어나<br/>전달되는 이야기</p>
+              <p style={{ fontSize:11, fontWeight:700, color:"#0a1a2e", marginBottom:4 }}>종이팩 다시쓰기</p>
+              <p style={{ fontSize:10, color:"#888", lineHeight:1.6, marginBottom:6 }}>재생 휴지로 태어나<br/>전달되는 이야기</p>
               <a href={RECYCLE_URL} target="_blank" rel="noreferrer"
-                style={{ fontSize:10, fontWeight:700, color: BLUE, textDecoration:"none", fontFamily:"Pretendard, sans-serif" }}>활동 보러가기 →</a>
+                style={{ fontSize:10, fontWeight:700, color:BLUE, textDecoration:"none" }}>활동 보러가기 →</a>
             </div>
           </div>
         </div>
@@ -282,18 +326,17 @@ function CafePage({ data }) {
         <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:28 }}>
           <a href={MAP_URL} target="_blank" rel="noreferrer" style={{
             display:"block", width:"100%", padding:"15px",
-            background: BLUE, borderRadius:50,
+            background:BLUE, borderRadius:50,
             textAlign:"center", fontSize:15, fontWeight:700, color:"#fff",
-            textDecoration:"none", fontFamily:"Pretendard, sans-serif",
+            textDecoration:"none",
           }}>
             다른 지구 카페 확인하기 →
           </a>
           <button onClick={share} style={{
             width:"100%", padding:"15px",
-            background: GREEN, borderRadius:50,
+            background:GREEN, borderRadius:50,
             border:"none", cursor:"pointer",
             fontSize:15, fontWeight:700, color:"#fff",
-            fontFamily:"Pretendard, sans-serif",
           }}>
             공유하기
           </button>
@@ -303,10 +346,8 @@ function CafePage({ data }) {
         <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10 }}>
           <img src={LOGO_URL} alt="지소행" style={{ width:110, objectFit:"contain" }}/>
           <div style={{ display:"flex", gap:20 }}>
-            <a href={INSTA_URL} target="_blank" rel="noreferrer"
-              style={{ fontSize:12, color:"#bbb", textDecoration:"none", fontFamily:"Pretendard, sans-serif" }}>인스타그램</a>
-            <a href={HOME_URL} target="_blank" rel="noreferrer"
-              style={{ fontSize:12, color:"#bbb", textDecoration:"none", fontFamily:"Pretendard, sans-serif" }}>홈페이지</a>
+            <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
+            <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
           </div>
         </div>
       </div>
