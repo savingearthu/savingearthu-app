@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 
-// ── URL 설정 ──────────────────────────────────────────────────────────────────
 const API_URL      = "https://script.google.com/macros/s/AKfycbyzE7WdVzzrdS7PhzyvponsP9wvtSxI9EroRozP12vVeCLtC1RPe_Rx1bKOORnxkzEy/exec";
 const LOGO_URL     = "https://cdn.imweb.me/upload/S20230420b05ab2cbf2d03/17b01aa6bd13a.png";
 const INTERVIEW_URL= "https://stibee.com/api/v1.0/emails/share/5VZxW3ytjo2n2O7uTRp-sVi4Uh9A-p0";
@@ -10,10 +9,8 @@ const INSTA_URL    = "https://www.instagram.com/savingearthu/";
 const MAP_URL      = "https://map.naver.com/p/favorite/myPlace/folder/11dff33693824487b7ff9cfcadea7c8c?c=15.00,0,0,0,dh";
 const TEACHER_IMG  = "/teacher.jpg";
 const PAPER_IMG    = "/jigucafe_bg.jpg";
-
 const GREEN = "#00a54f";
 const BLUE  = "#00aeef";
-// ─────────────────────────────────────────────────────────────────────────────
 
 function getCafeId() {
   return new URLSearchParams(window.location.search).get("cafeId") || "";
@@ -26,57 +23,40 @@ function fmt(n) {
   return Math.round(v).toLocaleString("ko-KR");
 }
 
-const GLOBAL_STYLE = `
-  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
-  body { background: #fff; }
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(10px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-`;
-
 // ── 로딩 ─────────────────────────────────────────────────────────────────────
 function LoadingScreen() {
   return (
-    <>
-      <style>{GLOBAL_STYLE}</style>
-      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
-      <div style={{
-        minHeight:"100vh", background:"#fff",
-        display:"flex", flexDirection:"column",
-        alignItems:"center", justifyContent:"center", gap:20,
-      }}>
-        <img src={LOGO_URL} alt="지소행" style={{ width:130, opacity:0.45 }}/>
-        <p style={{ fontSize:14, color:"#ccc", fontWeight:400 }}>로딩 중...</p>
-      </div>
-    </>
+    <div style={{
+      minHeight:"100vh", background:"#fff",
+      display:"flex", flexDirection:"column",
+      alignItems:"center", justifyContent:"center", gap:20,
+    }}>
+      <img src={LOGO_URL} alt="지소행" style={{ width:130 }}/>
+      <p style={{ fontSize:14, color:"#ccc", fontWeight:400 }}>로딩 중...</p>
+    </div>
   );
 }
 
 // ── 에러 ─────────────────────────────────────────────────────────────────────
 function ErrorScreen({ detail }) {
   return (
-    <>
-      <style>{GLOBAL_STYLE}</style>
-      <div style={{
-        minHeight:"100vh", background:"#fff",
-        display:"flex", flexDirection:"column",
-        alignItems:"center", justifyContent:"center",
-        textAlign:"center", padding:"2rem", gap:8,
-      }}>
-        <p style={{ fontSize:13, color:"#aaa" }}>카페 정보를 찾을 수 없어요.</p>
-        <p style={{ fontSize:11, color:"#ccc" }}>{detail}</p>
-      </div>
-    </>
+    <div style={{
+      minHeight:"100vh", background:"#fff",
+      display:"flex", flexDirection:"column",
+      alignItems:"center", justifyContent:"center",
+      textAlign:"center", padding:"2rem", gap:8,
+    }}>
+      <p style={{ fontSize:13, color:"#aaa" }}>카페 정보를 찾을 수 없어요.</p>
+      <p style={{ fontSize:11, color:"#ccc" }}>{detail}</p>
+    </div>
   );
 }
 
 // ── 홈 화면 ──────────────────────────────────────────────────────────────────
 function HomeScreen() {
-  const [cafes, setCafes]       = useState([]);
-  const [open, setOpen]         = useState(false);
-  const [loading, setLoading]   = useState(true);
+  const [cafes, setCafes]     = useState([]);
+  const [open, setOpen]       = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`${API_URL}?action=list`, { redirect:"follow" })
@@ -90,54 +70,48 @@ function HomeScreen() {
   }
 
   return (
-    <>
-      <style>{GLOBAL_STYLE}</style>
-      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+    <div style={{
+      minHeight:"100vh", background:"#fff",
+      display:"flex", flexDirection:"column",
+      alignItems:"center", justifyContent:"center",
+      padding:"2rem 1.5rem", gap:"1.8rem",
+    }}>
+      <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
 
-      <div style={{
-        minHeight:"100vh", background:"#fff",
-        display:"flex", flexDirection:"column",
-        alignItems:"center", justifyContent:"center",
-        padding:"2rem 1.5rem", gap:"1.8rem",
-      }}>
-        {/* 로고 */}
-        <img src={LOGO_URL} alt="지소행" style={{ width:180, objectFit:"contain" }}/>
+      <div style={{ width:"100%", position:"relative", zIndex:100 }}>
+        <button
+          onClick={() => setOpen(o => !o)}
+          style={{
+            width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between",
+            background: BLUE, borderRadius:50,
+            padding:"14px 20px",
+            border:"none", cursor:"pointer",
+          }}
+        >
+          <span style={{ display:"flex", alignItems:"center", gap:10 }}>
+            <span className="material-symbols-outlined" style={{ fontSize:20, color:"#fff" }}>search</span>
+            <span style={{ fontSize:15, color:"#fff", fontWeight:600, fontFamily:"Pretendard, sans-serif" }}>지구 카페 찾기</span>
+          </span>
+          <span className="material-symbols-outlined" style={{
+            fontSize:20, color:"rgba(255,255,255,0.8)",
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+            transition:"transform .2s",
+          }}>keyboard_arrow_down</span>
+        </button>
 
-        {/* 설명 */}
-        <p style={{ fontSize:13, color:"#bbb", textAlign:"center", lineHeight:1.8, fontWeight:400 }}>
-          지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요
-        </p>
-
-        {/* 드롭다운 */}
-        <div style={{ width:"100%", maxWidth:400, position:"relative", zIndex:100 }}>
-          <button
-            onClick={() => setOpen(o => !o)}
-            style={{
-              width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between",
-              background: BLUE, borderRadius:50,
-              padding:"0.85rem 1.25rem",
-              border:"none", cursor:"pointer",
-            }}
-          >
-            <span style={{ display:"flex", alignItems:"center", gap:10 }}>
-              <span className="material-symbols-outlined" style={{ fontSize:20, color:"#fff", verticalAlign:"middle" }}>search</span>
-              <span style={{ fontSize:15, color:"#fff", fontWeight:600 }}>지구 카페 찾기</span>
-            </span>
-            <span className="material-symbols-outlined" style={{
-              fontSize:20, color:"rgba(255,255,255,0.8)",
-              transform: open ? "rotate(180deg)" : "rotate(0deg)",
-              transition:"transform .2s",
-            }}>keyboard_arrow_down</span>
-          </button>
-
-          {open && (
+        {open && (
+          <>
+            <div
+              style={{ position:"fixed", inset:0, zIndex:99 }}
+              onClick={() => setOpen(false)}
+            />
             <div style={{
               position:"absolute", top:"calc(100% + 8px)", left:0, right:0,
               background:"#fff", borderRadius:16,
               boxShadow:"0 8px 32px rgba(0,0,0,0.1)",
               maxHeight:300, overflowY:"auto",
-              animation:"fadeUp .15s ease",
               border:"1.5px solid #e8e8e8",
+              zIndex:100,
             }}>
               {loading ? (
                 <p style={{ padding:"1rem", textAlign:"center", fontSize:13, color:"#ccc" }}>로딩 중...</p>
@@ -147,10 +121,11 @@ function HomeScreen() {
                 <div key={cafe.id}
                   onClick={() => select(cafe)}
                   style={{
-                    padding:"0.85rem 1.25rem",
-                    cursor:"pointer", fontSize:14, color:"#222",
+                    padding:"13px 20px", cursor:"pointer",
+                    fontSize:14, color:"#222",
                     borderBottom: i < cafes.length-1 ? "1px solid #f5f5f5" : "none",
                     display:"flex", alignItems:"center", gap:10,
+                    fontFamily:"Pretendard, sans-serif",
                   }}
                   onMouseEnter={e => e.currentTarget.style.background="#f5f5f5"}
                   onMouseLeave={e => e.currentTarget.style.background="#fff"}
@@ -160,14 +135,14 @@ function HomeScreen() {
                 </div>
               ))}
             </div>
-          )}
-        </div>
-
-        {open && (
-          <div style={{ position:"fixed", inset:0, zIndex:99 }} onClick={() => setOpen(false)}/>
+          </>
         )}
       </div>
-    </>
+
+      <p style={{ fontSize:13, color:"#bbb", textAlign:"center", lineHeight:1.8, fontWeight:400 }}>
+        지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요
+      </p>
+    </div>
   );
 }
 
@@ -192,148 +167,150 @@ function CafePage({ data }) {
   ];
 
   const STATS = [
-    { icon:"package_2", label:"종이팩",   value:fmt(data.count),  unit:"개"  },
+    { icon:"package_2", label:"종이팩",    value:fmt(data.count),  unit:"개"  },
     { icon:"forest",    label:"살린 나무", value:fmt(data.trees),  unit:"그루" },
     { icon:"recycling", label:"재생 휴지", value:fmt(data.tissue), unit:"개"  },
   ];
 
   return (
-    <>
-      <style>{GLOBAL_STYLE + `
-        .bottom-sheet::-webkit-scrollbar { display: none; }
-      `}</style>
-      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+    <div style={{ minHeight:"100vh", background:"#fff" }}>
 
-      <div style={{ minHeight:"100vh", maxWidth:480, margin:"0 auto", background:"#fff", position:"relative" }}>
+      {/* 상단 종이팩 사진 */}
+      <div style={{ width:"100%", height:220, position:"relative", overflow:"hidden", background:"#eee" }}>
+        <img
+          src={PAPER_IMG} alt="종이팩"
+          style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}
+          onError={e => { e.target.style.display = "none"; }}
+        />
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.25))" }}/>
+        <a href="/" style={{
+          position:"absolute", top:16, left:16,
+          background:"#fff", borderRadius:"50%",
+          width:36, height:36, display:"flex", alignItems:"center", justifyContent:"center",
+          boxShadow:"0 2px 8px rgba(0,0,0,0.15)", textDecoration:"none",
+        }}>
+          <span className="material-symbols-outlined" style={{ fontSize:18, color:"#333" }}>arrow_back</span>
+        </a>
+      </div>
 
-        {/* 상단 종이팩 사진 */}
-        <div style={{ width:"100%", height:"45vw", maxHeight:220, position:"relative", overflow:"hidden", background:"#eee" }}>
-          <img src={PAPER_IMG} alt="종이팩" style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
-          <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.3))" }}/>
-          {/* 뒤로가기 */}
-          <button onClick={() => window.history.back()} style={{
-            position:"absolute", top:14, left:14,
-            background:"#fff", border:"none", borderRadius:"50%",
-            width:34, height:34, display:"flex", alignItems:"center", justifyContent:"center",
-            boxShadow:"0 2px 8px rgba(0,0,0,0.15)", cursor:"pointer",
+      {/* 바텀 시트 */}
+      <div style={{
+        background:"#fff", borderRadius:"20px 20px 0 0",
+        marginTop:-20, position:"relative",
+        padding:"14px 20px 48px",
+      }}>
+        <div style={{ width:32, height:4, background:"#e8e8e8", borderRadius:2, margin:"0 auto 18px" }}/>
+
+        {/* 태그 */}
+        <div style={{ textAlign:"center", marginBottom:8 }}>
+          <span style={{
+            display:"inline-block", background:"#e8f5ee",
+            borderRadius:20, padding:"3px 14px",
+            fontSize:11, color: GREEN, fontWeight:600,
+          }}>2025년부터 함께하는 지구카페</span>
+        </div>
+
+        {/* 카페 이름 */}
+        <h1 style={{
+          fontSize:28, fontWeight:800, color:"#0a1a2e",
+          lineHeight:1.2, marginBottom:20, textAlign:"left",
+          fontFamily:"Pretendard, sans-serif",
+        }}>
+          {data.cafe}
+        </h1>
+
+        {/* 통계 */}
+        <div style={{ display:"flex", gap:8, marginBottom:20 }}>
+          {STATS.map((s,i) => (
+            <div key={i} style={{
+              flex:1, background:"#f0faf4", borderRadius:14,
+              padding:"12px 4px", textAlign:"center",
+            }}>
+              <span className="material-symbols-outlined" style={{ fontSize:22, color: GREEN, display:"block", marginBottom:4 }}>{s.icon}</span>
+              <p style={{ fontSize:17, fontWeight:800, color: GREEN, fontFamily:"Pretendard, sans-serif" }}>{s.value}</p>
+              <p style={{ fontSize:10, color:"#bbb", fontFamily:"Pretendard, sans-serif" }}>{s.unit}</p>
+              <p style={{ fontSize:10, color:"#999", marginTop:2, fontFamily:"Pretendard, sans-serif" }}>{s.label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* 자원순환 구조 */}
+        <p style={{ fontSize:13, fontWeight:700, color:"#0a1a2e", marginBottom:10, textAlign:"center", fontFamily:"Pretendard, sans-serif" }}>자원순환 구조</p>
+        <div style={{ display:"flex", alignItems:"center", gap:2, marginBottom:20 }}>
+          {FLOW.map((f, i) => (
+            <div key={i} style={{ display:"flex", alignItems:"center", flex:1 }}>
+              <div style={{ flex:1, background:"#f0f9ff", borderRadius:10, padding:"8px 2px", textAlign:"center" }}>
+                <span className="material-symbols-outlined" style={{ fontSize:18, color: BLUE, display:"block", marginBottom:3 }}>{f.icon}</span>
+                <p style={{ fontSize:9, color:"#0a6a8a", lineHeight:1.3, wordBreak:"keep-all", fontFamily:"Pretendard, sans-serif" }}>{f.label}</p>
+              </div>
+              {i < FLOW.length-1 && (
+                <span style={{ fontSize:14, color: BLUE, fontWeight:800, flexShrink:0, margin:"0 2px" }}>›</span>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* 함께하는 사람들 */}
+        <p style={{ fontSize:13, fontWeight:700, color:"#0a1a2e", marginBottom:10, textAlign:"center", fontFamily:"Pretendard, sans-serif" }}>함께하는 사람들</p>
+        <div style={{ display:"flex", borderRadius:14, overflow:"hidden", border:"1px solid #eef2f8", marginBottom:20 }}>
+          <div style={{ flex:1, background:"#f7fafe" }}>
+            <img
+              src={TEACHER_IMG} alt="황무연 선생님"
+              style={{ width:"100%", height:100, objectFit:"cover", objectPosition:"center top", display:"block" }}
+              onError={e => { e.target.style.display="none"; }}
+            />
+            <div style={{ padding:"10px 10px 12px", textAlign:"center" }}>
+              <p style={{ fontSize:11, fontWeight:700, color:"#0a1a2e", marginBottom:4, fontFamily:"Pretendard, sans-serif" }}>황무연 선생님</p>
+              <p style={{ fontSize:10, color:"#888", lineHeight:1.6, marginBottom:6, fontFamily:"Pretendard, sans-serif" }}>충무로 카페 종이팩을<br/>매일 수거하시는 분</p>
+              <a href={INTERVIEW_URL} target="_blank" rel="noreferrer"
+                style={{ fontSize:10, fontWeight:700, color: BLUE, textDecoration:"none", fontFamily:"Pretendard, sans-serif" }}>지구인-터뷰 →</a>
+            </div>
+          </div>
+          <div style={{ width:1, background:"#e8eef8", flexShrink:0 }}/>
+          <div style={{ flex:1, background:"#f7fafe" }}>
+            <div style={{ width:"100%", height:100, background:"#f0f0f0" }}/>
+            <div style={{ padding:"10px 10px 12px", textAlign:"center" }}>
+              <p style={{ fontSize:11, fontWeight:700, color:"#0a1a2e", marginBottom:4, fontFamily:"Pretendard, sans-serif" }}>종이팩 다시쓰기</p>
+              <p style={{ fontSize:10, color:"#888", lineHeight:1.6, marginBottom:6, fontFamily:"Pretendard, sans-serif" }}>재생 휴지로 태어나<br/>전달되는 이야기</p>
+              <a href={RECYCLE_URL} target="_blank" rel="noreferrer"
+                style={{ fontSize:10, fontWeight:700, color: BLUE, textDecoration:"none", fontFamily:"Pretendard, sans-serif" }}>활동 보러가기 →</a>
+            </div>
+          </div>
+        </div>
+
+        {/* 버튼 */}
+        <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:28 }}>
+          <a href={MAP_URL} target="_blank" rel="noreferrer" style={{
+            display:"block", width:"100%", padding:"15px",
+            background: BLUE, borderRadius:50,
+            textAlign:"center", fontSize:15, fontWeight:700, color:"#fff",
+            textDecoration:"none", fontFamily:"Pretendard, sans-serif",
           }}>
-            <span className="material-symbols-outlined" style={{ fontSize:18, color:"#333" }}>arrow_back</span>
+            다른 지구 카페 확인하기 →
+          </a>
+          <button onClick={share} style={{
+            width:"100%", padding:"15px",
+            background: GREEN, borderRadius:50,
+            border:"none", cursor:"pointer",
+            fontSize:15, fontWeight:700, color:"#fff",
+            fontFamily:"Pretendard, sans-serif",
+          }}>
+            공유하기
           </button>
         </div>
 
-        {/* 바텀 시트 */}
-        <div style={{
-          background:"#fff", borderRadius:"20px 20px 0 0",
-          marginTop:-20, position:"relative",
-          padding:"12px 20px 40px",
-          minHeight:"60vh",
-        }}>
-          {/* 핸들 */}
-          <div style={{ width:32, height:4, background:"#e8e8e8", borderRadius:2, margin:"0 auto 16px" }}/>
-
-          {/* 태그 */}
-          <div style={{ textAlign:"center", marginBottom:6 }}>
-            <span style={{
-              display:"inline-block", background:"#e8f5ee",
-              borderRadius:20, padding:"2px 12px",
-              fontSize:11, color: GREEN, fontWeight:600,
-            }}>2025년부터 함께하는 지구카페</span>
-          </div>
-
-          {/* 카페 이름 - 왼쪽 정렬 */}
-          <h1 style={{ fontSize:24, fontWeight:800, color:"#0a1a2e", lineHeight:1.2, marginBottom:16, textAlign:"left" }}>
-            {data.cafe}
-          </h1>
-
-          {/* 통계 - 초록 */}
-          <div style={{ display:"flex", gap:8, marginBottom:16 }}>
-            {STATS.map((s,i) => (
-              <div key={i} style={{
-                flex:1, background:"#f0faf4", borderRadius:12,
-                padding:"10px 4px", textAlign:"center",
-              }}>
-                <span className="material-symbols-outlined" style={{ fontSize:20, color: GREEN, display:"block", marginBottom:3 }}>{s.icon}</span>
-                <p style={{ fontSize:15, fontWeight:800, color: GREEN }}>{s.value}</p>
-                <p style={{ fontSize:9, color:"#bbb" }}>{s.unit}</p>
-                <p style={{ fontSize:9, color:"#999", marginTop:1 }}>{s.label}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* 자원순환 구조 - 파랑 */}
-          <p style={{ fontSize:12, fontWeight:700, color:"#0a1a2e", marginBottom:10, textAlign:"center" }}>자원순환 구조</p>
-          <div style={{ display:"flex", alignItems:"center", gap:2, marginBottom:16 }}>
-            {FLOW.map((f, i) => (
-              <div key={i} style={{ display:"flex", alignItems:"center", flex:1 }}>
-                <div style={{ flex:1, background:"#f0f9ff", borderRadius:8, padding:"7px 2px", textAlign:"center" }}>
-                  <span className="material-symbols-outlined" style={{ fontSize:15, color: BLUE, display:"block", marginBottom:2 }}>{f.icon}</span>
-                  <p style={{ fontSize:8, color:"#0a6a8a", lineHeight:1.3, wordBreak:"keep-all" }}>{f.label}</p>
-                </div>
-                {i < FLOW.length-1 && (
-                  <span style={{ fontSize:12, color: BLUE, fontWeight:800, flexShrink:0, margin:"0 1px" }}>›</span>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* 함께하는 사람들 */}
-          <p style={{ fontSize:12, fontWeight:700, color:"#0a1a2e", marginBottom:10, textAlign:"center" }}>함께하는 사람들</p>
-          <div style={{ display:"flex", borderRadius:12, overflow:"hidden", border:"1px solid #eef2f8", marginBottom:16 }}>
-            {/* 황무연 선생님 */}
-            <div style={{ flex:1, background:"#f7fafe" }}>
-              <img src={TEACHER_IMG} alt="황무연 선생님" style={{ width:"100%", height:80, objectFit:"cover", objectPosition:"center top", display:"block" }}/>
-              <div style={{ padding:"8px 8px 10px", textAlign:"center" }}>
-                <p style={{ fontSize:10, fontWeight:700, color:"#0a1a2e", marginBottom:3 }}>황무연 선생님</p>
-                <p style={{ fontSize:9, color:"#888", lineHeight:1.6, marginBottom:5 }}>충무로 카페 종이팩을<br/>매일 수거하시는 분</p>
-                <a href={INTERVIEW_URL} target="_blank" rel="noreferrer"
-                  style={{ fontSize:9, fontWeight:700, color: BLUE, textDecoration:"none" }}>지구인-터뷰 →</a>
-              </div>
-            </div>
-            {/* 구분선 */}
-            <div style={{ width:1, background:"#e8eef8", flexShrink:0 }}/>
-            {/* 종이팩 다시쓰기 - 사진 비워둠 */}
-            <div style={{ flex:1, background:"#f7fafe" }}>
-              <div style={{ width:"100%", height:80, background:"#f0f0f0" }}/>
-              <div style={{ padding:"8px 8px 10px", textAlign:"center" }}>
-                <p style={{ fontSize:10, fontWeight:700, color:"#0a1a2e", marginBottom:3 }}>종이팩 다시쓰기</p>
-                <p style={{ fontSize:9, color:"#888", lineHeight:1.6, marginBottom:5 }}>재생 휴지로 태어나<br/>전달되는 이야기</p>
-                <a href={RECYCLE_URL} target="_blank" rel="noreferrer"
-                  style={{ fontSize:9, fontWeight:700, color: BLUE, textDecoration:"none" }}>활동 보러가기 →</a>
-              </div>
-            </div>
-          </div>
-
-          {/* 버튼 */}
-          <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:24 }}>
-            <a href={MAP_URL} target="_blank" rel="noreferrer" style={{
-              display:"block", width:"100%", padding:"13px",
-              background: BLUE, borderRadius:50,
-              textAlign:"center", fontSize:14, fontWeight:700, color:"#fff",
-              textDecoration:"none",
-            }}>
-              다른 지구 카페 확인하기 →
-            </a>
-            <button onClick={share} style={{
-              width:"100%", padding:"13px",
-              background: GREEN, borderRadius:50,
-              border:"none", cursor:"pointer",
-              fontSize:14, fontWeight:700, color:"#fff",
-            }}>
-              공유하기
-            </button>
-          </div>
-
-          {/* 하단 로고 */}
-          <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10 }}>
-            <img src={LOGO_URL} alt="지소행" style={{ width:100, opacity:0.4, objectFit:"contain" }}/>
-            <div style={{ display:"flex", gap:16 }}>
-              <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
-              <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
-            </div>
+        {/* 하단 로고 */}
+        <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10 }}>
+          <img src={LOGO_URL} alt="지소행" style={{ width:110, objectFit:"contain" }}/>
+          <div style={{ display:"flex", gap:20 }}>
+            <a href={INSTA_URL} target="_blank" rel="noreferrer"
+              style={{ fontSize:12, color:"#bbb", textDecoration:"none", fontFamily:"Pretendard, sans-serif" }}>인스타그램</a>
+            <a href={HOME_URL} target="_blank" rel="noreferrer"
+              style={{ fontSize:12, color:"#bbb", textDecoration:"none", fontFamily:"Pretendard, sans-serif" }}>홈페이지</a>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
