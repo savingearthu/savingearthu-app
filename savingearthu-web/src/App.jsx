@@ -197,7 +197,7 @@ function CafePage({ data }) {
       {/* 상단 종이팩 사진 */}
       <div style={{ position:"absolute", top:0, left:0, right:0, height:PHOTO_H, overflow:"hidden", background:"#e8e8e8" }}>
         <img
-          src="지구카페 배경.JPG"
+          src="bg.jpg"
           alt="종이팩"
           style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}
         />
