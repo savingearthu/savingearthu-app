@@ -105,9 +105,9 @@ function CafePage({ data }) {
   const isDragging = useRef(false);
   const startY     = useRef(0);
   const startTop   = useRef(0);
-  const PHOTO_H    = 210;
+  const PHOTO_H    = 420;
   const MIN_TOP    = 60;
-  const INIT_TOP   = PHOTO_H - 24;
+  const INIT_TOP   = 180;
   const [sheetTop, setSheetTop] = useState(INIT_TOP);
 
   function onHandleTouchStart(e) {
@@ -120,14 +120,19 @@ function CafePage({ data }) {
     if (!isDragging.current) return;
     e.preventDefault();
     const dy   = e.touches[0].clientY - startY.current;
-    const next = Math.min(INIT_TOP, Math.max(MIN_TOP, startTop.current + dy));
+    const next = Math.min(380, Math.max(MIN_TOP, startTop.current + dy));
     setSheetTop(next);
   }
 
   function onHandleTouchEnd() {
     isDragging.current = false;
-    const mid = (MIN_TOP + INIT_TOP) / 2;
-    setSheetTop(sheetTop < mid ? MIN_TOP : INIT_TOP);
+    if (sheetTop < 120) {
+      setSheetTop(MIN_TOP);
+    } else if (sheetTop < 280) {
+      setSheetTop(180);
+    } else {
+      setSheetTop(380);
+    }
   }
 
   function share() {
@@ -160,7 +165,7 @@ function CafePage({ data }) {
 
       {/* 상단 배경 사진 - 비율 줄임 */}
       <div style={{ position:"absolute", top:0, left:0, right:0, height:PHOTO_H, overflow:"hidden", background:"#e8e8e8" }}>
-        <img src={BG_IMG} alt="배경" style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+        <img src={BG_IMG} alt="배경" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 60%", display:"block" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.25))" }}/>
         <a href="/" style={{ position:"absolute", top:16, left:16, background:"#fff", borderRadius:"50%", width:38, height:38, display:"flex", alignItems:"center", justifyContent:"center", boxShadow:"0 2px 8px rgba(0,0,0,0.15)", textDecoration:"none" }}>
           <span className="material-symbols-outlined" style={{ fontSize:20, color:"#333" }}>arrow_back</span>
