@@ -2,13 +2,13 @@ import { useState, useEffect, useRef } from "react";
 
 const API_URL      = "https://script.google.com/macros/s/AKfycbyzE7WdVzzrdS7PhzyvponsP9wvtSxI9EroRozP12vVeCLtC1RPe_Rx1bKOORnxkzEy/exec";
 const LOGO_URL     = "https://cdn.imweb.me/upload/S20230420b05ab2cbf2d03/17b01aa6bd13a.png";
-const INTERVIEW_URL= "https://stibee.com/api/v1.0/emails/share/5VZxW3ytjo2n2O7uTRp-sVi4Uh9A-p0";
+const INTERVIEW_URL= "https://savingearthu.org/actions/?q=YToyOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjtzOjQ6InBhZ2UiO2k6Mjt9&bmode=view&idx=170382834&t=board";
 const RECYCLE_URL  = "https://savingearthu.org/actions/?q=YToxOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjt9&bmode=view&idx=170908572&t=board";
 const HOME_URL     = "https://savingearthu.org/";
 const INSTA_URL    = "https://www.instagram.com/savingearthu/";
 const MAP_URL      = "https://map.naver.com/p/favorite/myPlace/folder/11dff33693824487b7ff9cfcadea7c8c?c=15.00,0,0,0,dh";
 const CONTACT_URL  = "https://savingearthu.org/send";
-const BG_IMG       = "bg.jpg";
+const BG_IMG       = "bg2.JPG";
 const TEACHER_IMG  = "DSCF6872_2.jpg";
 const RECYCLE_IMG  = "DSCF5384.JPG";
 const GREEN = "#00a54f";
@@ -140,9 +140,9 @@ function CafePage({ data }) {
   }
 
   const STATS = [
-    { icon:"inventory_2", label:"종이팩",    value:fmt(data.count),  unit:"개"  },
-    { icon:"forest",      label:"살린 나무", value:fmt(data.trees),  unit:"그루" },
-    { icon:"recycling",   label:"재생 휴지", value:fmt(data.tissue), unit:"개"  },
+    { icon:"package_2", label:"종이팩",    value:fmt(data.count),  unit:"개"  },
+    { icon:"forest",    label:"살린 나무", value:fmt(data.trees),  unit:"그루" },
+    { icon:"recycling", label:"재생 휴지", value:fmt(data.tissue), unit:"개"  },
   ];
 
   const FLOW_ROW1 = [
@@ -199,12 +199,12 @@ function CafePage({ data }) {
           {/* 통계 */}
           <div style={{ display:"flex", gap:8, marginBottom:24 }}>
             {STATS.map((s,i) => (
-              <div key={i} style={{ flex:1, background:"#f0faf4", borderRadius:14, padding:"16px 4px", textAlign:"center" }}>
-                <span className="material-symbols-outlined" style={{ fontSize:26, color:GREEN, display:"block", marginBottom:6 }}>{s.icon}</span>
-                <p style={{ fontSize:22, fontWeight:800, color:GREEN, lineHeight:1 }}>
-                  {s.value}<span style={{ fontSize:12, color:"#aaa", fontWeight:500, marginLeft:2 }}>{s.unit}</span>
+              <div key={i} style={{ flex:1, background:"#f0faf4", borderRadius:14, padding:"12px 4px", textAlign:"center" }}>
+                <span className="material-symbols-outlined" style={{ fontSize:22, color:GREEN, display:"block", marginBottom:5 }}>{s.icon}</span>
+                <p style={{ fontSize:18, fontWeight:800, color:GREEN, lineHeight:1 }}>
+                  {s.value}<span style={{ fontSize:11, color:"#aaa", fontWeight:500, marginLeft:2 }}>{s.unit}</span>
                 </p>
-                <p style={{ fontSize:13, color:"#888", marginTop:5 }}>{s.label}</p>
+                <p style={{ fontSize:12, color:"#888", marginTop:4 }}>{s.label}</p>
               </div>
             ))}
           </div>
