@@ -93,7 +93,7 @@ function HomeScreen() {
       </div>
 
       <p style={{ fontSize:14, color:"#bbb", textAlign:"center", lineHeight:1.9, fontWeight:400 }}>
-        지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요
+        지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요!
       </p>
     </div>
   );
@@ -139,9 +139,9 @@ function CafePage({ data }) {
   }
 
   const STATS = [
-    { icon:"water_drop", label:"종이팩",    value:fmt(data.count),  unit:"개"  },
+    { icon:"grocery",    label:"종이팩",    value:fmt(data.count),  unit:"개"  },
     { icon:"forest",     label:"살린 나무", value:fmt(data.trees),  unit:"그루" },
-    { icon:"scroll",     label:"재생 휴지", value:fmt(data.tissue), unit:"개"  },
+    { icon:"sanitizer",  label:"재생 휴지", value:fmt(data.tissue), unit:"개"  },
   ];
 
   const FLOW_ROW1 = [
@@ -150,8 +150,8 @@ function CafePage({ data }) {
     { icon:"factory",        label:"제지사"      },
   ];
   const FLOW_ROW2 = [
-    { icon:"recycling",          label:"재생 휴지" },
-    { icon:"volunteer_activism", label:"기후취약계층에게 전달" },
+    { icon:"recycling",          label:"재생 휴지"      },
+    { icon:"volunteer_activism", label:"기후취약계층 전달" },
   ];
 
   return (
@@ -234,21 +234,16 @@ function CafePage({ data }) {
                 </div>
               ))}
             </div>
-            {/* 2행: 2개 - 왼쪽 첫번째 칸 아래에서 이어지게 */}
-            <div style={{ display:"flex", alignItems:"center", gap:2 }}>
-              {/* 첫 칸 너비만큼 여백 + 화살표 */}
-              <div style={{ flex:1, display:"flex", justifyContent:"center", paddingTop:2 }}>
-                <span style={{ fontSize:16, color:BLUE, fontWeight:800 }}>↓</span>
-              </div>
-              <div style={{ width:22, flexShrink:0 }}/>
+            {/* 2행: 2개 - 가운데 정렬 */}
+            <div style={{ display:"flex", alignItems:"center", gap:2, justifyContent:"center" }}>
               {/* 재생휴지 */}
-              <div style={{ flex:1, background:"#f0f9ff", borderRadius:10, padding:"10px 2px", textAlign:"center" }}>
+              <div style={{ width:"38%", background:"#f0f9ff", borderRadius:10, padding:"10px 2px", textAlign:"center" }}>
                 <span className="material-symbols-outlined" style={{ fontSize:20, color:BLUE, display:"block", marginBottom:4 }}>{FLOW_ROW2[0].icon}</span>
                 <p style={{ fontSize:10, color:"#0a6a8a" }}>{FLOW_ROW2[0].label}</p>
               </div>
               <span style={{ fontSize:16, color:BLUE, fontWeight:800, flexShrink:0, margin:"0 3px" }}>›</span>
               {/* 기후취약계층 */}
-              <div style={{ flex:1, background:"#f0f9ff", borderRadius:10, padding:"10px 2px", textAlign:"center" }}>
+              <div style={{ width:"38%", background:"#f0f9ff", borderRadius:10, padding:"10px 2px", textAlign:"center" }}>
                 <span className="material-symbols-outlined" style={{ fontSize:20, color:BLUE, display:"block", marginBottom:4 }}>{FLOW_ROW2[1].icon}</span>
                 <p style={{ fontSize:9, color:"#0a6a8a", wordBreak:"keep-all", lineHeight:1.3 }}>{FLOW_ROW2[1].label}</p>
               </div>
