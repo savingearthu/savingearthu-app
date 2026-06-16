@@ -65,7 +65,7 @@ function HomeScreen() {
 
   return (
     <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
-    <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2.5rem", gap:"1.8rem" }}>
+    <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2.5rem", gap:"1.8rem", position:"relative" }}>
       <a href={HOME_URL} target="_blank" rel="noreferrer">
         <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
       </a>
@@ -104,7 +104,7 @@ function HomeScreen() {
         지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요!
       </p>
 
-      <div style={{ display:"flex", gap:20 }}>
+      <div style={{ position:"absolute", bottom:24, display:"flex", gap:20 }}>
         <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
         <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
         <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
