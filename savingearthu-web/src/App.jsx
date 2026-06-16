@@ -27,8 +27,8 @@ function fmt(n) {
 
 function LoadingScreen() {
   return (
-    <div style={{ minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:20 }}>
-      <img src={LOGO_URL} alt="지소행" style={{ width:130 }}/>
+    <div style={{ minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:24 }}>
+      <img src={LOGO_URL} alt="지소행" style={{ width:200 }}/>
       <p style={{ fontSize:16, color:"#ccc", fontWeight:400 }}>지구카페 찾는 중...</p>
     </div>
   );
