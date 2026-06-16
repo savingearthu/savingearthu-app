@@ -66,7 +66,9 @@ function HomeScreen() {
   return (
     <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
     <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 1.5rem", gap:"1.8rem" }}>
-      <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
+      <a href={HOME_URL} target="_blank" rel="noreferrer">
+        <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
+      </a>
 
       <div style={{ width:"100%", maxWidth:400, position:"relative", zIndex:100 }}>
         <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"15px 22px", border:"none", cursor:"pointer" }}>
@@ -199,7 +201,7 @@ function CafePage({ data }) {
           </div>
 
           {/* 카페 이름 */}
-          <h1 style={{ fontSize:30, fontWeight:800, color:"#0a1a2e", lineHeight:1.2, marginBottom:20, textAlign:"left" }}>
+          <h1 style={{ fontSize:30, fontWeight:800, color:"#0a1a2e", lineHeight:1.2, marginBottom:20, textAlign:"center" }}>
             {data.cafe}
           </h1>
 
@@ -281,7 +283,9 @@ function CafePage({ data }) {
 
           {/* 하단 로고 + 링크 */}
           <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:12 }}>
-            <img src={LOGO_URL} alt="지소행" style={{ width:110, objectFit:"contain" }}/>
+            <a href={HOME_URL} target="_blank" rel="noreferrer">
+              <img src={LOGO_URL} alt="지소행" style={{ width:110, objectFit:"contain" }}/>
+            </a>
             <div style={{ display:"flex", gap:20 }}>
               <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:14, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
               <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:14, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
