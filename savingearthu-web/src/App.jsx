@@ -55,7 +55,7 @@ function HomeScreen() {
   useEffect(() => {
     fetch(`${API_URL}?action=list`, { redirect:"follow" })
       .then(r => r.json())
-      .then(d => { setCafes(d.cafes || []); setLoading(false); })
+      .then(d => { setCafes((d.cafes || []).sort((a, b) => a.name.localeCompare(b.name, "ko"))); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
 
