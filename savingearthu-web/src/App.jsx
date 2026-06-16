@@ -27,18 +27,22 @@ function fmt(n) {
 
 function LoadingScreen() {
   return (
-    <div style={{ minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:24 }}>
+    <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
+    <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:24 }}>
       <img src={LOGO_URL} alt="지소행" style={{ width:200 }}/>
       <p style={{ fontSize:16, color:"#ccc", fontWeight:400 }}>지구카페 찾는 중...</p>
+    </div>
     </div>
   );
 }
 
 function ErrorScreen({ detail }) {
   return (
-    <div style={{ minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", textAlign:"center", padding:"2rem", gap:8 }}>
+    <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
+    <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", textAlign:"center", padding:"2rem", gap:8 }}>
       <p style={{ fontSize:16, color:"#aaa" }}>카페 정보를 찾을 수 없어요.</p>
       <p style={{ fontSize:14, color:"#ccc" }}>{detail}</p>
+    </div>
     </div>
   );
 }
