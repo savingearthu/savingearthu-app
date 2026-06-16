@@ -103,6 +103,12 @@ function HomeScreen() {
       <p style={{ fontSize:15, color:"#bbb", textAlign:"center", lineHeight:2, fontWeight:400 }}>
         지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요!
       </p>
+
+      <div style={{ display:"flex", gap:20 }}>
+        <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
+        <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
+        <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
+      </div>
     </div>
     </div>
   );
