@@ -65,7 +65,7 @@ function HomeScreen() {
 
   return (
     <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
-    <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 1.5rem", gap:"1.8rem" }}>
+    <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2.5rem", gap:"1.8rem" }}>
       <a href={HOME_URL} target="_blank" rel="noreferrer">
         <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
       </a>
