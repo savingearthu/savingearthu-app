@@ -60,7 +60,8 @@ function HomeScreen() {
   }
 
   return (
-    <div style={{ minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 1.5rem", gap:"1.8rem" }}>
+    <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
+    <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 1.5rem", gap:"1.8rem" }}>
       <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
 
       <div style={{ width:"100%", maxWidth:400, position:"relative", zIndex:100 }}>
@@ -96,6 +97,7 @@ function HomeScreen() {
       <p style={{ fontSize:15, color:"#bbb", textAlign:"center", lineHeight:2, fontWeight:400 }}>
         지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요!
       </p>
+    </div>
     </div>
   );
 }
@@ -156,7 +158,8 @@ function CafePage({ data }) {
   ];
 
   return (
-    <div style={{ width:"100%", height:"100vh", overflow:"hidden", position:"relative", background:"#fff" }}>
+    <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
+    <div style={{ width:"100%", maxWidth:480, height:"100vh", overflow:"hidden", position:"relative", background:"#fff" }}>
 
       {/* 상단 배경 사진 - 비율 줄임 */}
       <div style={{ position:"absolute", top:0, left:0, right:0, height:PHOTO_H, overflow:"hidden", background:"#e8e8e8" }}>
@@ -283,6 +286,7 @@ function CafePage({ data }) {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
