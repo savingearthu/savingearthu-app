@@ -64,17 +64,28 @@ function HomeScreen() {
   }
 
   return (
-    <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
-    <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2.5rem", gap:"1.8rem", position:"relative", overflow:"hidden" }}>
+    <div style={{ background:"#f0f0f0", height:"100vh", display:"flex", justifyContent:"center", overflow:"hidden" }}>
+    <div style={{ width:"100%", maxWidth:480, height:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2.5rem", gap:"1.8rem", position:"relative", overflow:"hidden" }}>
 
-      {/* 서브로고 - 하단 크게 */}
-      <img src="sublogo.png" alt="" style={{
-        position:"absolute", bottom:"2%", left:"50%",
-        transform:"translateX(-50%)",
-        width:220, opacity:0.07,
-        pointerEvents:"none", userSelect:"none",
-      }}/>
-      <a href={HOME_URL} target="_blank" rel="noreferrer">
+      {/* 서브로고 반복 패턴 */}
+      <div style={{
+        position:"absolute", inset:0,
+        display:"grid",
+        gridTemplateColumns:"repeat(4, 1fr)",
+        opacity:0.07, pointerEvents:"none", userSelect:"none",
+        overflow:"hidden",
+      }}>
+        {Array.from({length:32}).map((_, i) => (
+          <img key={i} src="sublogo.png" alt="" style={{
+            width:"100%", padding:8,
+            filter: i % 2 === 0
+              ? "invert(48%) sepia(90%) saturate(400%) hue-rotate(165deg) brightness(100%)"
+              : "invert(42%) sepia(80%) saturate(400%) hue-rotate(95deg) brightness(95%)",
+          }}/>
+        ))}
+      </div>
+
+      <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ position:"relative", zIndex:1 }}>
         <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
       </a>
 
@@ -108,11 +119,11 @@ function HomeScreen() {
         )}
       </div>
 
-      <p style={{ fontSize:15, color:"#bbb", textAlign:"center", lineHeight:2, fontWeight:400 }}>
+      <p style={{ fontSize:15, color:"#bbb", textAlign:"center", lineHeight:2, fontWeight:400, position:"relative", zIndex:1 }}>
         지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요!
       </p>
 
-      <div style={{ position:"absolute", bottom:24, display:"flex", gap:20 }}>
+      <div style={{ position:"absolute", bottom:24, display:"flex", gap:20, zIndex:1 }}>
         <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
         <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
         <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
@@ -191,7 +202,6 @@ function CafePage({ data }) {
 
       <div style={{ position:"absolute", left:0, right:0, top:sheetTop, bottom:0, background:"#fff", borderRadius:"20px 20px 0 0", boxShadow:"0 -4px 24px rgba(0,0,0,0.1)", display:"flex", flexDirection:"column", transition:"top 0.3s ease" }}>
 
-        {/* 핸들 */}
         <div
           ref={handleRef}
           onTouchStart={onHandleTouchStart}
@@ -204,19 +214,16 @@ function CafePage({ data }) {
 
         <div style={{ flex:1, overflowY:"auto", padding:"6px 20px 48px", WebkitOverflowScrolling:"touch" }}>
 
-          {/* 태그 */}
           <div style={{ textAlign:"center", marginBottom:14 }}>
             <span style={{ display:"inline-block", background:"#e8f5ee", borderRadius:20, padding:"5px 16px", fontSize:13, color:GREEN, fontWeight:600 }}>
               2025년부터 함께하는 지구카페
             </span>
           </div>
 
-          {/* 카페 이름 */}
           <h1 style={{ fontSize:30, fontWeight:800, color:"#0a1a2e", lineHeight:1.2, marginBottom:20, textAlign:"center" }}>
             {data.cafe}
           </h1>
 
-          {/* 통계 */}
           <div style={{ display:"flex", gap:8, marginBottom:24 }}>
             {STATS.map((s,i) => (
               <div key={i} style={{ flex:1, background:"#f0faf4", borderRadius:14, padding:"12px 4px", textAlign:"center" }}>
@@ -229,7 +236,6 @@ function CafePage({ data }) {
             ))}
           </div>
 
-          {/* 자원순환 구조 */}
           <p style={{ fontSize:16, fontWeight:700, color:"#0a1a2e", marginBottom:4, textAlign:"center" }}>자원순환 구조</p>
           <p style={{ fontSize:12, color:"#bbb", textAlign:"center", marginBottom:12 }}>버려지는 종이팩이 따뜻한 마음이 되기까지</p>
           <div style={{ marginBottom:24 }}>
@@ -252,7 +258,6 @@ function CafePage({ data }) {
                 <p style={{ fontSize:11, color:"#0a6a8a" }}>{FLOW_ROW2[0].label}</p>
               </div>
               <span style={{ fontSize:18, color:BLUE, fontWeight:800, flexShrink:0, margin:"0 3px" }}>›</span>
-              {/* 기후취약계층 - 초록 강조 + 클릭 가능 */}
               <div style={{ width:"38%", background:"#e8f5ee", borderRadius:10, padding:"12px 2px", textAlign:"center" }}>
                 <span className="material-symbols-outlined" style={{ fontSize:22, color:GREEN, display:"block", marginBottom:5 }}>{FLOW_ROW2[1].icon}</span>
                 <a href="https://savingearthu.org/actions/?q=YToxOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjt9&bmode=view&idx=170470777&t=board"
@@ -264,7 +269,6 @@ function CafePage({ data }) {
             </div>
           </div>
 
-          {/* 함께하는 사람들 */}
           <p style={{ fontSize:16, fontWeight:700, color:"#0a1a2e", marginBottom:12, textAlign:"center" }}>함께하는 사람들</p>
           <div style={{ display:"flex", borderRadius:14, overflow:"hidden", border:"1px solid #eef2f8", marginBottom:24 }}>
             <div style={{ flex:1, background:"#f7fafe" }}>
@@ -286,7 +290,6 @@ function CafePage({ data }) {
             </div>
           </div>
 
-          {/* 버튼 */}
           <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:28 }}>
             <a href={MAP_URL} target="_blank" rel="noreferrer" style={{ display:"block", width:"100%", padding:"15px", background:BLUE, borderRadius:50, textAlign:"center", fontSize:15, fontWeight:700, color:"#fff", textDecoration:"none" }}>
               다른 지구 카페 확인하기 →
@@ -296,7 +299,6 @@ function CafePage({ data }) {
             </button>
           </div>
 
-          {/* 하단 로고 + 링크 */}
           <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:12 }}>
             <a href={HOME_URL} target="_blank" rel="noreferrer">
               <img src={LOGO_URL} alt="지소행" style={{ width:110, objectFit:"contain" }}/>
