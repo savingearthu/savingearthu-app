@@ -67,16 +67,11 @@ function HomeScreen() {
     <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
     <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2.5rem", gap:"1.8rem", position:"relative", overflow:"hidden" }}>
 
-      {/* 서브로고 - 크고 흐릿하게 하단 */}
+      {/* 서브로고 - 중간 하단 배치, 짤리지 않게 */}
       <img src="sublogo.png" alt="" style={{
-        position:"absolute", bottom:-40, right:-30,
-        width:260, opacity:0.06,
-        pointerEvents:"none", userSelect:"none",
-      }}/>
-      {/* 서브로고 - 작게 좌상단 */}
-      <img src="sublogo.png" alt="" style={{
-        position:"absolute", top:-20, left:-20,
-        width:120, opacity:0.04,
+        position:"absolute", bottom:"8%", left:"50%",
+        transform:"translateX(-50%)",
+        width:200, opacity:0.07,
         pointerEvents:"none", userSelect:"none",
       }}/>
       <a href={HOME_URL} target="_blank" rel="noreferrer">
