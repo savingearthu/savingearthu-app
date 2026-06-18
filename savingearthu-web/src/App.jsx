@@ -231,7 +231,7 @@ function CafePage({ data }) {
 
           {/* 태그 위 서브로고 */}
           <div style={{ textAlign:"center", marginBottom:10 }}>
-            <img src="sublogo.png" alt="" style={{ width:64, opacity:0.2 }}/>
+            <img src="sublogo.png" alt="" style={{ width:64, opacity:1 }}/>
           </div>
 
           <div style={{ textAlign:"center", marginBottom:14 }}>
