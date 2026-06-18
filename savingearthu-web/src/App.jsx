@@ -191,7 +191,7 @@ function CafePage({ data }) {
           onTouchStart={onHandleTouchStart}
           onTouchMove={onHandleTouchMove}
           onTouchEnd={onHandleTouchEnd}
-          style={{ padding:"12px 0 8px", display:"flex", justifyContent:"center", cursor:"grab", flexShrink:0, touchAction:"none" }}
+          style={{ padding:"14px 0 14px", display:"flex", justifyContent:"center", cursor:"grab", flexShrink:0, touchAction:"none" }}
         >
           <div style={{ width:36, height:4, background:"#ddd", borderRadius:2 }}/>
         </div>
@@ -200,7 +200,7 @@ function CafePage({ data }) {
         <div style={{ flex:1, overflowY:"auto", padding:"6px 20px 48px", WebkitOverflowScrolling:"touch" }}>
 
           {/* 태그 */}
-          <div style={{ textAlign:"center", marginBottom:10 }}>
+          <div style={{ textAlign:"center", marginBottom:14 }}>
             <span style={{ display:"inline-block", background:"#e8f5ee", borderRadius:20, padding:"5px 16px", fontSize:13, color:GREEN, fontWeight:600 }}>
               2025년부터 함께하는 지구카페
             </span>
