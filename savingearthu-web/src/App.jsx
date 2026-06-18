@@ -67,23 +67,13 @@ function HomeScreen() {
     <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
     <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2.5rem", gap:"1.8rem", position:"relative", overflow:"hidden" }}>
 
-      {/* 서브로고 파랑/초록 번갈아 패턴 */}
-      <div style={{
-        position:"absolute", inset:"-15%",
-        display:"flex", flexWrap:"wrap",
-        alignContent:"flex-start",
-        opacity:0.07, pointerEvents:"none", userSelect:"none",
-        width:"130%",
-      }}>
-        {Array.from({length:42}).map((_, i) => (
-          <img key={i} src="sublogo.png" alt="" style={{
-            width:"20%", padding:6,
-            filter: i % 2 === 0
-              ? "invert(48%) sepia(90%) saturate(400%) hue-rotate(165deg) brightness(100%)"
-              : "invert(42%) sepia(80%) saturate(400%) hue-rotate(95deg) brightness(95%)",
-          }}/>
-        ))}
-      </div>
+      {/* 서브로고 - 하단 크게 */}
+      <img src="sublogo.png" alt="" style={{
+        position:"absolute", bottom:"2%", left:"50%",
+        transform:"translateX(-50%)",
+        width:220, opacity:0.07,
+        pointerEvents:"none", userSelect:"none",
+      }}/>
       <a href={HOME_URL} target="_blank" rel="noreferrer">
         <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
       </a>
