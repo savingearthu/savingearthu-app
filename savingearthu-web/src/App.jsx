@@ -245,13 +245,14 @@ function CafePage({ data }) {
               </div>
               <span style={{ fontSize:18, color:BLUE, fontWeight:800, flexShrink:0, margin:"0 3px" }}>›</span>
               {/* 기후취약계층 - 초록 강조 + 클릭 가능 */}
-              <a href="https://savingearthu.org/actions/?q=YToxOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjt9&bmode=view&idx=170470777&t=board"
-                target="_blank" rel="noreferrer"
-                style={{ width:"38%", background:"#e8f5ee", borderRadius:10, padding:"12px 2px 8px", textAlign:"center", textDecoration:"none", display:"block", position:"relative" }}>
+              <div style={{ width:"38%", background:"#e8f5ee", borderRadius:10, padding:"12px 2px", textAlign:"center" }}>
                 <span className="material-symbols-outlined" style={{ fontSize:22, color:GREEN, display:"block", marginBottom:5 }}>{FLOW_ROW2[1].icon}</span>
-                <p style={{ fontSize:10, color:GREEN, wordBreak:"keep-all", lineHeight:1.3, fontWeight:600, marginBottom:4 }}>{FLOW_ROW2[1].label}</p>
-                <span style={{ fontSize:9, color:GREEN, fontWeight:700 }}>자세히 보기 →</span>
-              </a>
+                <a href="https://savingearthu.org/actions/?q=YToxOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjt9&bmode=view&idx=170470777&t=board"
+                  target="_blank" rel="noreferrer"
+                  style={{ fontSize:10, color:GREEN, wordBreak:"keep-all", lineHeight:1.3, fontWeight:600, textDecoration:"underline", textUnderlineOffset:2 }}>
+                  {FLOW_ROW2[1].label} →
+                </a>
+              </div>
             </div>
           </div>
 
