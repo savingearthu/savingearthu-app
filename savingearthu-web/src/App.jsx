@@ -30,9 +30,14 @@ function LoadingScreen() {
     <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
     <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:24, position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", inset:0, display:"grid", gridTemplateColumns:"repeat(4, 1fr)", opacity:0.07, pointerEvents:"none", userSelect:"none", overflow:"hidden" }}>
-        {Array.from({length:32}).map((_, i) => (
-          <img key={i} src="sublogo.png" alt="" style={{ width:"100%", padding:8, filter: i % 2 === 0 ? "invert(48%) sepia(90%) saturate(400%) hue-rotate(165deg) brightness(100%)" : "invert(42%) sepia(80%) saturate(400%) hue-rotate(95deg) brightness(95%)" }}/>
-        ))}
+        {Array.from({length:32}).map((_, i) => {
+          const row = Math.floor(i / 4);
+          const col = i % 4;
+          const isBlue = (row % 2 === 0) ? (col % 2 === 1) : (col % 2 === 0);
+          return (
+            <img key={i} src="sublogo.png" alt="" style={{ width:"100%", padding:8, filter: isBlue ? "invert(48%) sepia(90%) saturate(400%) hue-rotate(165deg) brightness(100%)" : "invert(42%) sepia(80%) saturate(400%) hue-rotate(95deg) brightness(95%)" }}/>
+          );
+        })}
       </div>
       <img src={LOGO_URL} alt="지소행" style={{ width:200, position:"relative", zIndex:1 }}/>
       <p style={{ fontSize:16, color:"#ccc", fontWeight:400, position:"relative", zIndex:1 }}>지구카페 찾는 중...</p>
@@ -80,14 +85,19 @@ function HomeScreen() {
         opacity:0.07, pointerEvents:"none", userSelect:"none",
         overflow:"hidden",
       }}>
-        {Array.from({length:32}).map((_, i) => (
-          <img key={i} src="sublogo.png" alt="" style={{
-            width:"100%", padding:8,
-            filter: i % 2 === 0
-              ? "invert(48%) sepia(90%) saturate(400%) hue-rotate(165deg) brightness(100%)"
-              : "invert(42%) sepia(80%) saturate(400%) hue-rotate(95deg) brightness(95%)",
-          }}/>
-        ))}
+        {Array.from({length:32}).map((_, i) => {
+          const row = Math.floor(i / 4);
+          const col = i % 4;
+          const isBlue = (row % 2 === 0) ? (col % 2 === 1) : (col % 2 === 0);
+          return (
+            <img key={i} src="sublogo.png" alt="" style={{
+              width:"100%", padding:8,
+              filter: isBlue
+                ? "invert(48%) sepia(90%) saturate(400%) hue-rotate(165deg) brightness(100%)"
+                : "invert(42%) sepia(80%) saturate(400%) hue-rotate(95deg) brightness(95%)",
+            }}/>
+          );
+        })}
       </div>
 
       <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ position:"relative", zIndex:1 }}>
@@ -205,26 +215,24 @@ function CafePage({ data }) {
         </a>
       </div>
 
-      <div style={{ position:"absolute", left:0, right:0, top:sheetTop, bottom:0, background:"#fff", borderRadius:"20px 20px 0 0", boxShadow:"0 -4px 24px rgba(0,0,0,0.1)", display:"flex", flexDirection:"column", transition:"top 0.3s ease", overflow:"hidden" }}>
-
-        {/* 바텀시트 패턴 */}
-        <div style={{ position:"absolute", inset:0, display:"grid", gridTemplateColumns:"repeat(4, 1fr)", opacity:0.04, pointerEvents:"none", userSelect:"none", overflow:"hidden" }}>
-          {Array.from({length:32}).map((_, i) => (
-            <img key={i} src="sublogo.png" alt="" style={{ width:"100%", padding:8, filter: i % 2 === 0 ? "invert(48%) sepia(90%) saturate(400%) hue-rotate(165deg) brightness(100%)" : "invert(42%) sepia(80%) saturate(400%) hue-rotate(95deg) brightness(95%)" }}/>
-          ))}
-        </div>
+      <div style={{ position:"absolute", left:0, right:0, top:sheetTop, bottom:0, background:"#fff", borderRadius:"20px 20px 0 0", boxShadow:"0 -4px 24px rgba(0,0,0,0.1)", display:"flex", flexDirection:"column", transition:"top 0.3s ease" }}>
 
         <div
           ref={handleRef}
           onTouchStart={onHandleTouchStart}
           onTouchMove={onHandleTouchMove}
           onTouchEnd={onHandleTouchEnd}
-          style={{ padding:"14px 0 14px", display:"flex", justifyContent:"center", cursor:"grab", flexShrink:0, touchAction:"none", position:"relative", zIndex:1 }}
+          style={{ padding:"14px 0 14px", display:"flex", justifyContent:"center", cursor:"grab", flexShrink:0, touchAction:"none" }}
         >
           <div style={{ width:36, height:4, background:"#ddd", borderRadius:2 }}/>
         </div>
 
-        <div style={{ flex:1, overflowY:"auto", padding:"6px 20px 48px", WebkitOverflowScrolling:"touch", position:"relative", zIndex:1 }}>
+        <div style={{ flex:1, overflowY:"auto", padding:"6px 20px 48px", WebkitOverflowScrolling:"touch" }}>
+
+          {/* 태그 위 서브로고 */}
+          <div style={{ textAlign:"center", marginBottom:10 }}>
+            <img src="sublogo.png" alt="" style={{ width:64, opacity:0.2 }}/>
+          </div>
 
           <div style={{ textAlign:"center", marginBottom:14 }}>
             <span style={{ display:"inline-block", background:"#e8f5ee", borderRadius:20, padding:"5px 16px", fontSize:13, color:GREEN, fontWeight:600 }}>
