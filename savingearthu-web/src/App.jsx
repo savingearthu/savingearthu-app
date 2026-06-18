@@ -69,14 +69,15 @@ function HomeScreen() {
 
       {/* 서브로고 파랑/초록 번갈아 패턴 */}
       <div style={{
-        position:"absolute", inset:"-10%",
+        position:"absolute", inset:"-15%",
         display:"flex", flexWrap:"wrap",
         alignContent:"flex-start",
         opacity:0.07, pointerEvents:"none", userSelect:"none",
+        width:"130%",
       }}>
-        {Array.from({length:36}).map((_, i) => (
+        {Array.from({length:42}).map((_, i) => (
           <img key={i} src="sublogo.png" alt="" style={{
-            width:"22%", padding:6,
+            width:"20%", padding:6,
             filter: i % 2 === 0
               ? "invert(48%) sepia(90%) saturate(400%) hue-rotate(165deg) brightness(100%)"
               : "invert(42%) sepia(80%) saturate(400%) hue-rotate(95deg) brightness(95%)",
