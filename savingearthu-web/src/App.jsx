@@ -70,7 +70,7 @@ function HomeScreen() {
         <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
       </a>
 
-      <div style={{ width:"100%", maxWidth:400, position:"relative", zIndex:100 }}>
+      <div style={{ width:"100%", position:"relative", zIndex:100 }}>
         <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"15px 22px", border:"none", cursor:"pointer" }}>
           <span style={{ display:"flex", alignItems:"center", gap:10 }}>
             <span className="material-symbols-outlined" style={{ fontSize:22, color:"#fff" }}>search</span>
@@ -165,7 +165,7 @@ function CafePage({ data }) {
     { icon:"factory",        label:"제지사"      },
   ];
   const FLOW_ROW2 = [
-    { icon:"recycling",          label:"재생 휴지"    },
+    { icon:"recycling",          label:"재생 휴지"      },
     { icon:"volunteer_activism", label:"기후취약계층 전달" },
   ];
 
@@ -173,7 +173,6 @@ function CafePage({ data }) {
     <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
     <div style={{ width:"100%", maxWidth:480, height:"100vh", overflow:"hidden", position:"relative", background:"#fff" }}>
 
-      {/* 상단 배경 사진 - 비율 줄임 */}
       <div style={{ position:"absolute", top:0, left:0, right:0, height:PHOTO_H, overflow:"hidden", background:"#e8e8e8" }}>
         <img src={BG_IMG} alt="배경" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center center", display:"block" }}/>
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.25))" }}/>
@@ -182,10 +181,9 @@ function CafePage({ data }) {
         </a>
       </div>
 
-      {/* 바텀 시트 */}
       <div style={{ position:"absolute", left:0, right:0, top:sheetTop, bottom:0, background:"#fff", borderRadius:"20px 20px 0 0", boxShadow:"0 -4px 24px rgba(0,0,0,0.1)", display:"flex", flexDirection:"column", transition:"top 0.3s ease" }}>
 
-        {/* 핸들 - 여기만 드래그 */}
+        {/* 핸들 */}
         <div
           ref={handleRef}
           onTouchStart={onHandleTouchStart}
@@ -196,7 +194,6 @@ function CafePage({ data }) {
           <div style={{ width:36, height:4, background:"#ddd", borderRadius:2 }}/>
         </div>
 
-        {/* 스크롤 콘텐츠 */}
         <div style={{ flex:1, overflowY:"auto", padding:"6px 20px 48px", WebkitOverflowScrolling:"touch" }}>
 
           {/* 태그 */}
@@ -225,9 +222,9 @@ function CafePage({ data }) {
           </div>
 
           {/* 자원순환 구조 */}
-          <p style={{ fontSize:16, fontWeight:700, color:"#0a1a2e", marginBottom:12, textAlign:"center" }}>자원순환 구조</p>
+          <p style={{ fontSize:16, fontWeight:700, color:"#0a1a2e", marginBottom:4, textAlign:"center" }}>자원순환 구조</p>
+          <p style={{ fontSize:12, color:"#bbb", textAlign:"center", marginBottom:12 }}>버려지는 종이팩이 따뜻한 마음이 되기까지</p>
           <div style={{ marginBottom:24 }}>
-            {/* 1행: 3개 */}
             <div style={{ display:"flex", alignItems:"center", gap:2, marginBottom:6 }}>
               {FLOW_ROW1.map((f, i) => (
                 <div key={i} style={{ display:"flex", alignItems:"center", flex:1 }}>
@@ -241,16 +238,16 @@ function CafePage({ data }) {
                 </div>
               ))}
             </div>
-            {/* 2행: 2개 가운데 */}
             <div style={{ display:"flex", alignItems:"center", gap:2, justifyContent:"center" }}>
               <div style={{ width:"38%", background:"#f0f9ff", borderRadius:10, padding:"12px 2px", textAlign:"center" }}>
                 <span className="material-symbols-outlined" style={{ fontSize:22, color:BLUE, display:"block", marginBottom:5 }}>{FLOW_ROW2[0].icon}</span>
                 <p style={{ fontSize:11, color:"#0a6a8a" }}>{FLOW_ROW2[0].label}</p>
               </div>
               <span style={{ fontSize:18, color:BLUE, fontWeight:800, flexShrink:0, margin:"0 3px" }}>›</span>
-              <div style={{ width:"38%", background:"#f0f9ff", borderRadius:10, padding:"12px 2px", textAlign:"center" }}>
-                <span className="material-symbols-outlined" style={{ fontSize:22, color:BLUE, display:"block", marginBottom:5 }}>{FLOW_ROW2[1].icon}</span>
-                <p style={{ fontSize:10, color:"#0a6a8a", wordBreak:"keep-all", lineHeight:1.3 }}>{FLOW_ROW2[1].label}</p>
+              {/* 기후취약계층 - 초록 강조 */}
+              <div style={{ width:"38%", background:"#e8f5ee", borderRadius:10, padding:"12px 2px", textAlign:"center" }}>
+                <span className="material-symbols-outlined" style={{ fontSize:22, color:GREEN, display:"block", marginBottom:5 }}>{FLOW_ROW2[1].icon}</span>
+                <p style={{ fontSize:10, color:GREEN, wordBreak:"keep-all", lineHeight:1.3, fontWeight:600 }}>{FLOW_ROW2[1].label}</p>
               </div>
             </div>
           </div>
