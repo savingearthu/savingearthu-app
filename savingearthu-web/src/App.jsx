@@ -29,11 +29,7 @@ function LoadingScreen() {
   return (
     <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
     <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:24, position:"relative", overflow:"hidden" }}>
-      <div style={{ position:"absolute", inset:0, display:"grid", gridTemplateColumns:"repeat(3, 1fr)", opacity:0.08, pointerEvents:"none", userSelect:"none", overflow:"hidden" }}>
-        {Array.from({length:24}).map((_, i) => (
-          <img key={i} src={`sticker${(i % 6) + 1}.png`} alt="" style={{ width:"100%", padding:12, objectFit:"contain" }}/>
-        ))}
-      </div>
+      <div style={{ position:"absolute", inset:0, pointerEvents:"none" }}/>
       <img src={LOGO_URL} alt="지소행" style={{ width:200, position:"relative", zIndex:1 }}/>
       <p style={{ fontSize:16, color:"#ccc", fontWeight:400, position:"relative", zIndex:1 }}>지구카페 찾는 중...</p>
     </div>
@@ -106,33 +102,26 @@ function HomeScreen() {
     <div style={{ background:"#f0f0f0", height:"100vh", display:"flex", justifyContent:"center", overflow:"hidden" }}>
     <div style={{ width:"100%", maxWidth:480, height:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2.5rem", gap:"1.8rem", position:"relative", overflow:"hidden" }}>
 
-      {/* 스티커 반복 패턴 */}
-      <div style={{
-        position:"absolute", inset:0,
-        display:"grid",
-        gridTemplateColumns:"repeat(3, 1fr)",
-        opacity:0.08, pointerEvents:"none", userSelect:"none",
-        overflow:"hidden",
-      }}>
-        {Array.from({length:24}).map((_, i) => (
-          <img key={i} src={`sticker${(i % 6) + 1}.png`} alt="" style={{
-            width:"100%", padding:12,
-            objectFit:"contain",
-          }}/>
-        ))}
+      
       </div>
 
-      {/* 전체 종이팩 카운터 */}
+      {/* 전체 종이팩 카운터 + 스티커 */}
       {total && (
         <div style={{ position:"relative", zIndex:1, textAlign:"center" }}>
           <p style={{ fontSize:13, color:"#bbb", marginBottom:8, fontWeight:400 }}>
             충무로 지구카페가 함께 모은 종이팩
           </p>
-          <CountUp value={total.count} style={{
-            fontSize:64, fontWeight:900, color:GREEN,
-            letterSpacing:-2, lineHeight:1,
-          }}/>
-          <span style={{ fontSize:20, color:"#aaa", fontWeight:500, marginLeft:4 }}>개</span>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
+            <img src="Sticker5.png" alt="" style={{ width:64, objectFit:"contain" }}/>
+            <div>
+              <CountUp value={total.count} style={{
+                fontSize:64, fontWeight:900, color:GREEN,
+                letterSpacing:-2, lineHeight:1,
+              }}/>
+              <span style={{ fontSize:20, color:"#aaa", fontWeight:500, marginLeft:4 }}>개</span>
+            </div>
+            <img src="Sticker6.png" alt="" style={{ width:64, objectFit:"contain" }}/>
+          </div>
         </div>
       )}
 
