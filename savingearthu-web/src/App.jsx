@@ -94,16 +94,13 @@ function HomeScreen() {
       {/* 전체 종이팩 카운터 + 스티커 */}
       {total && (
         <div style={{ position:"relative", zIndex:1, textAlign:"center" }}>
-          <p style={{ fontSize:13, color:"#bbb", marginBottom:8, fontWeight:400 }}>
+          <img src="/sticker6.png" alt="" style={{ width:80, objectFit:"contain", marginBottom:4 }}/>
+          <p style={{ fontSize:13, color:"#bbb", marginBottom:4, fontWeight:400 }}>
             충무로 지구카페가 함께 모은 종이팩
           </p>
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
-            <img src="/sticker5.png" alt="" style={{ width:64, objectFit:"contain" }}/>
-            <div>
-              <CountUp value={total.count} style={{ fontSize:64, fontWeight:900, color:GREEN, letterSpacing:-2, lineHeight:1 }}/>
-              <span style={{ fontSize:20, color:"#aaa", fontWeight:500, marginLeft:4 }}>개</span>
-            </div>
-            <img src="/sticker6.png" alt="" style={{ width:64, objectFit:"contain" }}/>
+          <div style={{ display:"flex", alignItems:"baseline", justifyContent:"center", gap:4 }}>
+            <CountUp value={total.count} style={{ fontSize:52, fontWeight:900, color:GREEN, letterSpacing:-2, lineHeight:1 }}/>
+            <span style={{ fontSize:18, color:"#aaa", fontWeight:500 }}>개</span>
           </div>
         </div>
       )}
