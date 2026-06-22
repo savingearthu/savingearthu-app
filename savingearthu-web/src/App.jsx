@@ -98,12 +98,12 @@ function HomeScreen() {
             충무로 지구카페가 함께 모은 종이팩
           </p>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
-            <img src="Sticker5.png" alt="" style={{ width:64, objectFit:"contain" }}/>
+            <img src="/sticker5.png" alt="" style={{ width:64, objectFit:"contain" }}/>
             <div>
               <CountUp value={total.count} style={{ fontSize:64, fontWeight:900, color:GREEN, letterSpacing:-2, lineHeight:1 }}/>
               <span style={{ fontSize:20, color:"#aaa", fontWeight:500, marginLeft:4 }}>개</span>
             </div>
-            <img src="Sticker6.png" alt="" style={{ width:64, objectFit:"contain" }}/>
+            <img src="/sticker6.png" alt="" style={{ width:64, objectFit:"contain" }}/>
           </div>
         </div>
       )}
