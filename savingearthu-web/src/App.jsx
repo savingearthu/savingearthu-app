@@ -61,12 +61,18 @@ function HomeScreen() {
   const [cafes, setCafes]     = useState([]);
   const [open, setOpen]       = useState(false);
   const [loading, setLoading] = useState(true);
+  const [total, setTotal]     = useState(null);
 
   useEffect(() => {
     fetch(`${API_URL}?action=list`, { redirect:"follow" })
       .then(r => r.json())
       .then(d => { setCafes((d.cafes || []).sort((a, b) => a.name.localeCompare(b.name, "ko"))); setLoading(false); })
       .catch(() => setLoading(false));
+
+    fetch(`${API_URL}?action=total`, { redirect:"follow" })
+      .then(r => r.json())
+      .then(d => setTotal(d))
+      .catch(() => {});
   }, []);
 
   function select(cafe) {
@@ -137,6 +143,25 @@ function HomeScreen() {
       <p style={{ fontSize:15, color:"#bbb", textAlign:"center", lineHeight:2, fontWeight:400, position:"relative", zIndex:1 }}>
         지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요!
       </p>
+
+      {/* 전체 통계 */}
+      {total && (
+        <div style={{ width:"100%", display:"flex", gap:8, position:"relative", zIndex:1 }}>
+          {[
+            { icon:"package_2", label:"종이팩",    value:fmt(total.count),  unit:"개"  },
+            { icon:"forest",    label:"살린 나무", value:fmt(total.trees),  unit:"그루" },
+            { icon:"recycling", label:"재생 휴지", value:fmt(total.tissue), unit:"개"  },
+          ].map((s, i) => (
+            <div key={i} style={{ flex:1, background:"#f0faf4", borderRadius:14, padding:"12px 4px", textAlign:"center" }}>
+              <span className="material-symbols-outlined" style={{ fontSize:20, color:GREEN, display:"block", marginBottom:4 }}>{s.icon}</span>
+              <p style={{ fontSize:16, fontWeight:800, color:GREEN, lineHeight:1 }}>
+                {s.value}<span style={{ fontSize:10, color:"#aaa", fontWeight:500, marginLeft:2 }}>{s.unit}</span>
+              </p>
+              <p style={{ fontSize:11, color:"#888", marginTop:3 }}>{s.label}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div style={{ position:"absolute", bottom:24, display:"flex", gap:20, zIndex:1 }}>
         <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
