@@ -89,29 +89,29 @@ function HomeScreen() {
 
   return (
     <div style={{ background:"#f0f0f0", height:"100vh", display:"flex", justifyContent:"center", overflow:"hidden" }}>
-    <div style={{ width:"100%", maxWidth:480, height:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2.5rem", gap:"1.8rem", position:"relative", overflow:"hidden" }}>
+    <div style={{ width:"100%", maxWidth:480, height:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2rem", gap:"1.4rem", position:"relative", overflow:"hidden" }}>
 
       {/* 전체 종이팩 카운터 + 스티커 */}
       {total && (
         <div style={{ position:"relative", zIndex:1, textAlign:"center" }}>
-          <img src="/sticker6.png" alt="" style={{ width:110, objectFit:"contain", marginBottom:4 }}/>
-          <p style={{ fontSize:13, color:"#bbb", marginBottom:4, fontWeight:400 }}>
+          <img src="/sticker6.png" alt="" style={{ width:90, objectFit:"contain", marginBottom:6 }}/>
+          <p style={{ fontSize:12, color:"#bbb", marginBottom:4, fontWeight:400 }}>
             충무로 지구카페가 함께 모은 종이팩
           </p>
           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"center", gap:4 }}>
-            <CountUp value={total.count} style={{ fontSize:52, fontWeight:900, color:GREEN, letterSpacing:-2, lineHeight:1 }}/>
-            <span style={{ fontSize:18, color:"#aaa", fontWeight:500 }}>개</span>
+            <CountUp value={total.count} style={{ fontSize:48, fontWeight:900, color:GREEN, letterSpacing:-2, lineHeight:1 }}/>
+            <span style={{ fontSize:16, color:"#aaa", fontWeight:500 }}>개</span>
           </div>
         </div>
       )}
 
       <div style={{ width:"100%", position:"relative", zIndex:100 }}>
-        <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"15px 22px", border:"none", cursor:"pointer" }}>
+        <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"13px 20px", border:"none", cursor:"pointer" }}>
           <span style={{ display:"flex", alignItems:"center", gap:10 }}>
-            <span className="material-symbols-outlined" style={{ fontSize:22, color:"#fff" }}>search</span>
-            <span style={{ fontSize:17, color:"#fff", fontWeight:600 }}>지구 카페 찾기</span>
+            <span className="material-symbols-outlined" style={{ fontSize:20, color:"#fff" }}>search</span>
+            <span style={{ fontSize:16, color:"#fff", fontWeight:600 }}>지구 카페 찾기</span>
           </span>
-          <span className="material-symbols-outlined" style={{ fontSize:22, color:"rgba(255,255,255,0.8)", transform: open ? "rotate(180deg)" : "rotate(0deg)", transition:"transform .2s" }}>keyboard_arrow_down</span>
+          <span className="material-symbols-outlined" style={{ fontSize:20, color:"rgba(255,255,255,0.8)", transform: open ? "rotate(180deg)" : "rotate(0deg)", transition:"transform .2s" }}>keyboard_arrow_down</span>
         </button>
 
         {open && (
@@ -119,14 +119,14 @@ function HomeScreen() {
             <div style={{ position:"fixed", inset:0, zIndex:99 }} onClick={() => setOpen(false)}/>
             <div style={{ position:"absolute", top:"calc(100% + 8px)", left:0, right:0, background:"#fff", borderRadius:16, boxShadow:"0 8px 32px rgba(0,0,0,0.1)", maxHeight:300, overflowY:"auto", border:"1.5px solid #e8e8e8", zIndex:100 }}>
               {loading ? (
-                <p style={{ padding:"1rem", textAlign:"center", fontSize:15, color:"#ccc" }}>지구카페 찾는 중...</p>
+                <p style={{ padding:"1rem", textAlign:"center", fontSize:14, color:"#ccc" }}>지구카페 찾는 중...</p>
               ) : cafes.map((cafe, i) => (
                 <div key={cafe.id} onClick={() => select(cafe)}
-                  style={{ padding:"15px 22px", cursor:"pointer", fontSize:16, color:"#222", borderBottom: i < cafes.length-1 ? "1px solid #f5f5f5" : "none", display:"flex", alignItems:"center", gap:10 }}
+                  style={{ padding:"13px 20px", cursor:"pointer", fontSize:15, color:"#222", borderBottom: i < cafes.length-1 ? "1px solid #f5f5f5" : "none", display:"flex", alignItems:"center", gap:10 }}
                   onMouseEnter={e => e.currentTarget.style.background="#f5f5f5"}
                   onMouseLeave={e => e.currentTarget.style.background="#fff"}
                 >
-                  <span style={{ width:7, height:7, borderRadius:"50%", background:BLUE, flexShrink:0, display:"inline-block" }}/>
+                  <span style={{ width:6, height:6, borderRadius:"50%", background:BLUE, flexShrink:0, display:"inline-block" }}/>
                   {cafe.name}
                 </div>
               ))}
@@ -135,18 +135,18 @@ function HomeScreen() {
         )}
       </div>
 
-      <p style={{ fontSize:15, color:"#bbb", textAlign:"center", lineHeight:2, fontWeight:400, position:"relative", zIndex:1 }}>
+      <p style={{ fontSize:13, color:"#bbb", textAlign:"center", lineHeight:1.9, fontWeight:400, position:"relative", zIndex:1 }}>
         지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요!
       </p>
 
-      <div style={{ position:"absolute", bottom:24, display:"flex", flexDirection:"column", alignItems:"center", gap:10, zIndex:1 }}>
+      <div style={{ position:"absolute", bottom:20, display:"flex", flexDirection:"column", alignItems:"center", gap:8, zIndex:1 }}>
         <a href={HOME_URL} target="_blank" rel="noreferrer">
-          <img src={LOGO_URL} alt="지소행" style={{ width:110, objectFit:"contain" }}/>
+          <img src={LOGO_URL} alt="지소행" style={{ width:100, objectFit:"contain" }}/>
         </a>
-        <div style={{ display:"flex", gap:20 }}>
-          <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
-          <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
-          <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
+        <div style={{ display:"flex", gap:18 }}>
+          <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
+          <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
+          <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>문의하기</a>
         </div>
       </div>
     </div>
