@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
+
 const API_URL      = "https://script.google.com/macros/s/AKfycbyzE7WdVzzrdS7PhzyvponsP9wvtSxI9EroRozP12vVeCLtC1RPe_Rx1bKOORnxkzEy/exec";
 const LOGO_URL     = "https://cdn.imweb.me/upload/S20230420b05ab2cbf2d03/17b01aa6bd13a.png";
 const INTERVIEW_URL= "https://savingearthu.org/actions/?q=YToyOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjtzOjQ6InBhZ2UiO2k6Mjt9&bmode=view&idx=170382834&t=board";
@@ -14,9 +15,11 @@ const RECYCLE_IMG  = "DSCF5384.JPG";
 const GREEN = "#00a54f";
 const BLUE  = "#00aeef";
 
+
 function getCafeId() {
   return new URLSearchParams(window.location.search).get("cafeId") || "";
 }
+
 
 function fmt(n) {
   const v = Number(n);
@@ -24,6 +27,7 @@ function fmt(n) {
   if (v < 10) return v.toFixed(1);
   return Math.round(v).toLocaleString("ko-KR");
 }
+
 
 function LoadingScreen() {
   return (
@@ -36,6 +40,7 @@ function LoadingScreen() {
   );
 }
 
+
 function ErrorScreen({ detail }) {
   return (
     <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
@@ -46,6 +51,7 @@ function ErrorScreen({ detail }) {
     </div>
   );
 }
+
 
 function CountUp({ value, style }) {
   const [display, setDisplay] = useState(0);
@@ -66,11 +72,13 @@ function CountUp({ value, style }) {
   return <span style={style}>{display.toLocaleString("ko-KR")}</span>;
 }
 
+
 function HomeScreen() {
   const [cafes, setCafes]     = useState([]);
   const [open, setOpen]       = useState(false);
   const [loading, setLoading] = useState(true);
   const [total, setTotal]     = useState(null);
+
 
   useEffect(() => {
     fetch(`${API_URL}?action=list`, { redirect:"follow" })
@@ -83,36 +91,31 @@ function HomeScreen() {
       .catch(() => {});
   }, []);
 
+
   function select(cafe) {
     window.location.href = `?cafeId=${encodeURIComponent(cafe.id)}`;
   }
+
 
   return (
     <div style={{ background:"#f0f0f0", height:"100vh", display:"flex", justifyContent:"center", overflow:"hidden" }}>
     <div style={{ width:"100%", maxWidth:480, height:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2rem", gap:"1.4rem", position:"relative", overflow:"hidden" }}>
 
+
       {/* 전체 종이팩 카운터 + 스티커 */}
-      {/* 배경 숫자 */}
       {total && (
-        <div style={{
-          position:"absolute", top:"50%", left:"50%",
-          transform:"translate(-50%,-50%)",
-          fontSize:130, fontWeight:900,
-          color:GREEN, opacity:0.07,
-          letterSpacing:-4, whiteSpace:"nowrap",
-          pointerEvents:"none", lineHeight:1,
-          width:"100%", textAlign:"center",
-          zIndex:0,
-        }}>
-          {total.count.toLocaleString("ko-KR")}
+        <div style={{ position:"relative", zIndex:1, textAlign:"center" }}>
+          <img src="/sticker6.png" alt="" style={{ width:150, objectFit:"contain", marginBottom:8 }}/>
+          <p style={{ fontSize:13, color:"#bbb", marginBottom:6, fontWeight:400 }}>
+            충무로 지구카페가 함께 모은 종이팩
+          </p>
+          <div style={{ display:"flex", alignItems:"baseline", justifyContent:"center", gap:4 }}>
+            <CountUp value={total.count} style={{ fontSize:56, fontWeight:900, color:GREEN, letterSpacing:-2, lineHeight:1 }}/>
+            <span style={{ fontSize:18, color:"#aaa", fontWeight:500 }}>개</span>
+          </div>
         </div>
       )}
 
-      <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ position:"relative", zIndex:1 }}>
-        <img src={LOGO_URL} alt="지소행" style={{ width:130, objectFit:"contain" }}/>
-      </a>
-
-      <img src="/sticker6.png" alt="" style={{ width:100, objectFit:"contain", position:"relative", zIndex:1 }}/>
 
       <div style={{ width:"90%", position:"relative", zIndex:100 }}>
         <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"14px 22px", border:"none", cursor:"pointer" }}>
@@ -122,6 +125,7 @@ function HomeScreen() {
           </span>
           <span className="material-symbols-outlined" style={{ fontSize:22, color:"rgba(255,255,255,0.8)", transform: open ? "rotate(180deg)" : "rotate(0deg)", transition:"transform .2s" }}>keyboard_arrow_down</span>
         </button>
+
 
         {open && (
           <>
@@ -144,9 +148,11 @@ function HomeScreen() {
         )}
       </div>
 
+
       <p style={{ fontSize:14, color:"#bbb", textAlign:"center", lineHeight:1.9, fontWeight:400, position:"relative", zIndex:1 }}>
         지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요!
       </p>
+
 
       <div style={{ position:"absolute", bottom:20, display:"flex", flexDirection:"column", alignItems:"center", gap:8, zIndex:1 }}>
         <a href={HOME_URL} target="_blank" rel="noreferrer">
@@ -163,6 +169,7 @@ function HomeScreen() {
   );
 }
 
+
 function CafePage({ data }) {
   const handleRef  = useRef(null);
   const isDragging = useRef(false);
@@ -173,11 +180,13 @@ function CafePage({ data }) {
   const INIT_TOP   = PHOTO_H - 20;
   const [sheetTop, setSheetTop] = useState(INIT_TOP);
 
+
   function onHandleTouchStart(e) {
     isDragging.current = true;
     startY.current     = e.touches[0].clientY;
     startTop.current   = sheetTop;
   }
+
 
   function onHandleTouchMove(e) {
     if (!isDragging.current) return;
@@ -187,11 +196,13 @@ function CafePage({ data }) {
     setSheetTop(next);
   }
 
+
   function onHandleTouchEnd() {
     isDragging.current = false;
     const mid = (MIN_TOP + INIT_TOP) / 2;
     setSheetTop(sheetTop < mid ? MIN_TOP : INIT_TOP);
   }
+
 
   function share() {
     if (navigator.share) {
@@ -202,11 +213,13 @@ function CafePage({ data }) {
     }
   }
 
+
   const STATS = [
     { icon:"package_2", label:"종이팩",    value:fmt(data.count),  unit:"개"  },
     { icon:"forest",    label:"살린 나무", value:fmt(data.trees),  unit:"그루" },
     { icon:"recycling", label:"재생 휴지", value:fmt(data.tissue), unit:"개"  },
   ];
+
 
   const FLOW_ROW1 = [
     { icon:"local_cafe",     label:"카페"        },
@@ -218,9 +231,11 @@ function CafePage({ data }) {
     { icon:"volunteer_activism", label:"기후취약계층 전달" },
   ];
 
+
   return (
     <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
     <div style={{ width:"100%", maxWidth:480, height:"100vh", overflow:"hidden", position:"relative", background:"#fff" }}>
+
 
       <div style={{ position:"absolute", top:0, left:0, right:0, height:PHOTO_H, overflow:"hidden", background:"#e8e8e8" }}>
         <img src={BG_IMG} alt="배경" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center center", display:"block" }}/>
@@ -229,6 +244,7 @@ function CafePage({ data }) {
           <span className="material-symbols-outlined" style={{ fontSize:20, color:"#333" }}>arrow_back</span>
         </a>
       </div>
+
 
       <div style={{ position:"absolute", left:0, right:0, top:sheetTop, bottom:0, background:"#fff", borderRadius:"20px 20px 0 0", boxShadow:"0 -4px 24px rgba(0,0,0,0.1)", display:"flex", flexDirection:"column", transition:"top 0.3s ease" }}>
         <div
@@ -241,11 +257,14 @@ function CafePage({ data }) {
           <div style={{ width:36, height:4, background:"#ddd", borderRadius:2 }}/>
         </div>
 
+
         <div style={{ flex:1, overflowY:"auto", padding:"6px 20px 48px", WebkitOverflowScrolling:"touch" }}>
+
 
           <div style={{ textAlign:"center", marginBottom:10 }}>
             <img src="sublogo.png" alt="" style={{ width:64, opacity:1 }}/>
           </div>
+
 
           <div style={{ textAlign:"center", marginBottom:14 }}>
             <span style={{ display:"inline-block", background:"#e8f5ee", borderRadius:20, padding:"5px 16px", fontSize:13, color:GREEN, fontWeight:600 }}>
@@ -253,9 +272,11 @@ function CafePage({ data }) {
             </span>
           </div>
 
+
           <h1 style={{ fontSize:30, fontWeight:800, color:"#0a1a2e", lineHeight:1.2, marginBottom:20, textAlign:"center" }}>
             {data.cafe}
           </h1>
+
 
           <div style={{ display:"flex", gap:8, marginBottom:24 }}>
             {STATS.map((s,i) => (
@@ -268,6 +289,7 @@ function CafePage({ data }) {
               </div>
             ))}
           </div>
+
 
           <p style={{ fontSize:16, fontWeight:700, color:"#0a1a2e", marginBottom:4, textAlign:"center" }}>자원순환 구조</p>
           <p style={{ fontSize:12, color:"#bbb", textAlign:"center", marginBottom:12 }}>버려지는 종이팩이 따뜻한 마음이 되기까지</p>
@@ -302,6 +324,7 @@ function CafePage({ data }) {
             </div>
           </div>
 
+
           <p style={{ fontSize:16, fontWeight:700, color:"#0a1a2e", marginBottom:12, textAlign:"center" }}>함께하는 사람들</p>
           <div style={{ display:"flex", borderRadius:14, overflow:"hidden", border:"1px solid #eef2f8", marginBottom:24 }}>
             <div style={{ flex:1, background:"#f7fafe" }}>
@@ -323,6 +346,7 @@ function CafePage({ data }) {
             </div>
           </div>
 
+
           <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:28 }}>
             <a href={MAP_URL} target="_blank" rel="noreferrer" style={{ display:"block", width:"100%", padding:"15px", background:BLUE, borderRadius:50, textAlign:"center", fontSize:15, fontWeight:700, color:"#fff", textDecoration:"none" }}>
               다른 지구 카페 확인하기 →
@@ -331,6 +355,7 @@ function CafePage({ data }) {
               공유하기
             </button>
           </div>
+
 
           <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:12 }}>
             <a href={HOME_URL} target="_blank" rel="noreferrer">
@@ -349,16 +374,19 @@ function CafePage({ data }) {
   );
 }
 
+
 export default function App() {
   const cafeId = getCafeId();
   if (!cafeId) return <HomeScreen />;
   return <CafeDetailLoader cafeId={cafeId} />;
 }
 
+
 function CafeDetailLoader({ cafeId }) {
   const [status, setStatus] = useState("loading");
   const [data, setData]     = useState(null);
   const [errMsg, setErrMsg] = useState("");
+
 
   useEffect(() => {
     fetch(`${API_URL}?cafeId=${encodeURIComponent(cafeId)}`, { redirect:"follow" })
@@ -370,7 +398,9 @@ function CafeDetailLoader({ cafeId }) {
       .catch(e => { setErrMsg(e.message); setStatus("error"); });
   }, [cafeId]);
 
+
   if (status === "loading") return <LoadingScreen />;
   if (status === "error")   return <ErrorScreen detail={errMsg} />;
   return <CafePage data={data} />;
 }
+
