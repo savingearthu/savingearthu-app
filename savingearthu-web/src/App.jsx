@@ -63,7 +63,7 @@ function CountUp({ value, style }) {
 
   useEffect(() => {
     if (!value) return;
-    const duration = 1800;
+    const duration = 800;
     const steps = 60;
     const increment = value / steps;
     let current = 0;
