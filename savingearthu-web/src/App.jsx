@@ -28,10 +28,9 @@ function fmt(n) {
 function LoadingScreen() {
   return (
     <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
-    <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:24, position:"relative", overflow:"hidden" }}>
-      <div style={{ position:"absolute", inset:0, pointerEvents:"none" }}/>
-      <img src={LOGO_URL} alt="지소행" style={{ width:200, position:"relative", zIndex:1 }}/>
-      <p style={{ fontSize:16, color:"#ccc", fontWeight:400, position:"relative", zIndex:1 }}>지구카페 찾는 중...</p>
+    <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:24 }}>
+      <img src={LOGO_URL} alt="지소행" style={{ width:200 }}/>
+      <p style={{ fontSize:16, color:"#ccc", fontWeight:400 }}>지구카페 찾는 중...</p>
     </div>
     </div>
   );
@@ -48,33 +47,24 @@ function ErrorScreen({ detail }) {
   );
 }
 
-// ── 카운트업 컴포넌트 ─────────────────────────────────────
 function CountUp({ value, style }) {
   const [display, setDisplay] = useState(0);
-
   useEffect(() => {
     if (!value) return;
     const duration = 800;
     const steps = 60;
     const increment = value / steps;
-    let current = 0;
     let step = 0;
     const timer = setInterval(() => {
       step++;
-      current = Math.min(Math.round(increment * step), value);
+      const current = Math.min(Math.round(increment * step), value);
       setDisplay(current);
       if (step >= steps) clearInterval(timer);
     }, duration / steps);
     return () => clearInterval(timer);
   }, [value]);
-
-  return (
-    <span style={style}>
-      {display.toLocaleString("ko-KR")}
-    </span>
-  );
+  return <span style={style}>{display.toLocaleString("ko-KR")}</span>;
 }
-// ─────────────────────────────────────────────────────────
 
 function HomeScreen() {
   const [cafes, setCafes]     = useState([]);
@@ -87,7 +77,6 @@ function HomeScreen() {
       .then(r => r.json())
       .then(d => { setCafes((d.cafes || []).sort((a, b) => a.name.localeCompare(b.name, "ko"))); setLoading(false); })
       .catch(() => setLoading(false));
-
     fetch(`${API_URL}?action=total`, { redirect:"follow" })
       .then(r => r.json())
       .then(d => setTotal(d))
@@ -102,9 +91,6 @@ function HomeScreen() {
     <div style={{ background:"#f0f0f0", height:"100vh", display:"flex", justifyContent:"center", overflow:"hidden" }}>
     <div style={{ width:"100%", maxWidth:480, height:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2.5rem", gap:"1.8rem", position:"relative", overflow:"hidden" }}>
 
-      
-      </div>
-
       {/* 전체 종이팩 카운터 + 스티커 */}
       {total && (
         <div style={{ position:"relative", zIndex:1, textAlign:"center" }}>
@@ -114,10 +100,7 @@ function HomeScreen() {
           <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
             <img src="Sticker5.png" alt="" style={{ width:64, objectFit:"contain" }}/>
             <div>
-              <CountUp value={total.count} style={{
-                fontSize:64, fontWeight:900, color:GREEN,
-                letterSpacing:-2, lineHeight:1,
-              }}/>
+              <CountUp value={total.count} style={{ fontSize:64, fontWeight:900, color:GREEN, letterSpacing:-2, lineHeight:1 }}/>
               <span style={{ fontSize:20, color:"#aaa", fontWeight:500, marginLeft:4 }}>개</span>
             </div>
             <img src="Sticker6.png" alt="" style={{ width:64, objectFit:"contain" }}/>
@@ -159,7 +142,6 @@ function HomeScreen() {
         지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요!
       </p>
 
-      {/* 하단 고정 - 로고 + 링크 */}
       <div style={{ position:"absolute", bottom:24, display:"flex", flexDirection:"column", alignItems:"center", gap:10, zIndex:1 }}>
         <a href={HOME_URL} target="_blank" rel="noreferrer">
           <img src={LOGO_URL} alt="지소행" style={{ width:110, objectFit:"contain" }}/>
@@ -243,7 +225,6 @@ function CafePage({ data }) {
       </div>
 
       <div style={{ position:"absolute", left:0, right:0, top:sheetTop, bottom:0, background:"#fff", borderRadius:"20px 20px 0 0", boxShadow:"0 -4px 24px rgba(0,0,0,0.1)", display:"flex", flexDirection:"column", transition:"top 0.3s ease" }}>
-
         <div
           ref={handleRef}
           onTouchStart={onHandleTouchStart}
@@ -256,7 +237,6 @@ function CafePage({ data }) {
 
         <div style={{ flex:1, overflowY:"auto", padding:"6px 20px 48px", WebkitOverflowScrolling:"touch" }}>
 
-          {/* 태그 위 서브로고 */}
           <div style={{ textAlign:"center", marginBottom:10 }}>
             <img src="sublogo.png" alt="" style={{ width:64, opacity:1 }}/>
           </div>
