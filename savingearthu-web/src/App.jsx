@@ -92,18 +92,27 @@ function HomeScreen() {
     <div style={{ width:"100%", maxWidth:480, height:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2rem", gap:"1.4rem", position:"relative", overflow:"hidden" }}>
 
       {/* 전체 종이팩 카운터 + 스티커 */}
+      {/* 배경 숫자 */}
       {total && (
-        <div style={{ position:"relative", zIndex:1, textAlign:"center" }}>
-          <img src="/sticker6.png" alt="" style={{ width:150, objectFit:"contain", marginBottom:8 }}/>
-          <p style={{ fontSize:13, color:"#bbb", marginBottom:6, fontWeight:400 }}>
-            충무로 지구카페가 함께 모은 종이팩
-          </p>
-          <div style={{ display:"flex", alignItems:"baseline", justifyContent:"center", gap:4 }}>
-            <CountUp value={total.count} style={{ fontSize:56, fontWeight:900, color:GREEN, letterSpacing:-2, lineHeight:1 }}/>
-            <span style={{ fontSize:18, color:"#aaa", fontWeight:500 }}>개</span>
-          </div>
+        <div style={{
+          position:"absolute", top:"50%", left:"50%",
+          transform:"translate(-50%,-50%)",
+          fontSize:130, fontWeight:900,
+          color:GREEN, opacity:0.07,
+          letterSpacing:-4, whiteSpace:"nowrap",
+          pointerEvents:"none", lineHeight:1,
+          width:"100%", textAlign:"center",
+          zIndex:0,
+        }}>
+          {total.count.toLocaleString("ko-KR")}
         </div>
       )}
+
+      <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ position:"relative", zIndex:1 }}>
+        <img src={LOGO_URL} alt="지소행" style={{ width:130, objectFit:"contain" }}/>
+      </a>
+
+      <img src="/sticker6.png" alt="" style={{ width:100, objectFit:"contain", position:"relative", zIndex:1 }}/>
 
       <div style={{ width:"90%", position:"relative", zIndex:100 }}>
         <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"14px 22px", border:"none", cursor:"pointer" }}>
