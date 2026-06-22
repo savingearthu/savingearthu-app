@@ -57,6 +57,34 @@ function ErrorScreen({ detail }) {
   );
 }
 
+// ── 카운트업 컴포넌트 ─────────────────────────────────────
+function CountUp({ value, style }) {
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    if (!value) return;
+    const duration = 1800;
+    const steps = 60;
+    const increment = value / steps;
+    let current = 0;
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      current = Math.min(Math.round(increment * step), value);
+      setDisplay(current);
+      if (step >= steps) clearInterval(timer);
+    }, duration / steps);
+    return () => clearInterval(timer);
+  }, [value]);
+
+  return (
+    <span style={style}>
+      {display.toLocaleString("ko-KR")}
+    </span>
+  );
+}
+// ─────────────────────────────────────────────────────────
+
 function HomeScreen() {
   const [cafes, setCafes]     = useState([]);
   const [open, setOpen]       = useState(false);
@@ -106,9 +134,19 @@ function HomeScreen() {
         })}
       </div>
 
-      <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ position:"relative", zIndex:1 }}>
-        <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
-      </a>
+      {/* 전체 종이팩 카운터 */}
+      {total && (
+        <div style={{ position:"relative", zIndex:1, textAlign:"center" }}>
+          <p style={{ fontSize:13, color:"#bbb", marginBottom:8, fontWeight:400 }}>
+            충무로 지구카페가 함께 모은 종이팩
+          </p>
+          <CountUp value={total.count} style={{
+            fontSize:64, fontWeight:900, color:GREEN,
+            letterSpacing:-2, lineHeight:1,
+          }}/>
+          <span style={{ fontSize:20, color:"#aaa", fontWeight:500, marginLeft:4 }}>개</span>
+        </div>
+      )}
 
       <div style={{ width:"100%", position:"relative", zIndex:100 }}>
         <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"15px 22px", border:"none", cursor:"pointer" }}>
@@ -144,29 +182,16 @@ function HomeScreen() {
         지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요!
       </p>
 
-      {/* 전체 통계 */}
-      {total && (
-        <div style={{ width:"100%", display:"flex", gap:8, position:"relative", zIndex:1 }}>
-          {[
-            { icon:"package_2", label:"종이팩",    value:fmt(total.count),  unit:"개"  },
-            { icon:"forest",    label:"살린 나무", value:fmt(total.trees),  unit:"그루" },
-            { icon:"recycling", label:"재생 휴지", value:fmt(total.tissue), unit:"개"  },
-          ].map((s, i) => (
-            <div key={i} style={{ flex:1, background:"#f0faf4", borderRadius:14, padding:"12px 4px", textAlign:"center" }}>
-              <span className="material-symbols-outlined" style={{ fontSize:20, color:GREEN, display:"block", marginBottom:4 }}>{s.icon}</span>
-              <p style={{ fontSize:16, fontWeight:800, color:GREEN, lineHeight:1 }}>
-                {s.value}<span style={{ fontSize:10, color:"#aaa", fontWeight:500, marginLeft:2 }}>{s.unit}</span>
-              </p>
-              <p style={{ fontSize:11, color:"#888", marginTop:3 }}>{s.label}</p>
-            </div>
-          ))}
+      {/* 하단 고정 - 로고 + 링크 */}
+      <div style={{ position:"absolute", bottom:24, display:"flex", flexDirection:"column", alignItems:"center", gap:10, zIndex:1 }}>
+        <a href={HOME_URL} target="_blank" rel="noreferrer">
+          <img src={LOGO_URL} alt="지소행" style={{ width:110, objectFit:"contain" }}/>
+        </a>
+        <div style={{ display:"flex", gap:20 }}>
+          <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
+          <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
+          <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
         </div>
-      )}
-
-      <div style={{ position:"absolute", bottom:24, display:"flex", gap:20, zIndex:1 }}>
-        <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
-        <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
-        <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
       </div>
     </div>
     </div>
