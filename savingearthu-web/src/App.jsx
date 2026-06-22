@@ -105,7 +105,7 @@ function HomeScreen() {
         </div>
       )}
 
-      <div style={{ width:"100%", position:"relative", zIndex:100 }}>
+      <div style={{ width:"90%", position:"relative", zIndex:100 }}>
         <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"13px 20px", border:"none", cursor:"pointer" }}>
           <span style={{ display:"flex", alignItems:"center", gap:10 }}>
             <span className="material-symbols-outlined" style={{ fontSize:20, color:"#fff" }}>search</span>
