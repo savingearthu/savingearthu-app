@@ -29,15 +29,10 @@ function LoadingScreen() {
   return (
     <div style={{ background:"#f0f0f0", minHeight:"100vh", display:"flex", justifyContent:"center" }}>
     <div style={{ width:"100%", maxWidth:480, minHeight:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:24, position:"relative", overflow:"hidden" }}>
-      <div style={{ position:"absolute", inset:0, display:"grid", gridTemplateColumns:"repeat(4, 1fr)", opacity:0.07, pointerEvents:"none", userSelect:"none", overflow:"hidden" }}>
-        {Array.from({length:32}).map((_, i) => {
-          const row = Math.floor(i / 4);
-          const col = i % 4;
-          const isBlue = (row % 2 === 0) ? (col % 2 === 1) : (col % 2 === 0);
-          return (
-            <img key={i} src="sublogo.png" alt="" style={{ width:"100%", padding:8, filter: isBlue ? "invert(48%) sepia(90%) saturate(400%) hue-rotate(165deg) brightness(100%)" : "invert(42%) sepia(80%) saturate(400%) hue-rotate(95deg) brightness(95%)" }}/>
-          );
-        })}
+      <div style={{ position:"absolute", inset:0, display:"grid", gridTemplateColumns:"repeat(3, 1fr)", opacity:0.08, pointerEvents:"none", userSelect:"none", overflow:"hidden" }}>
+        {Array.from({length:24}).map((_, i) => (
+          <img key={i} src={`sticker${(i % 6) + 1}.png`} alt="" style={{ width:"100%", padding:12, objectFit:"contain" }}/>
+        ))}
       </div>
       <img src={LOGO_URL} alt="지소행" style={{ width:200, position:"relative", zIndex:1 }}/>
       <p style={{ fontSize:16, color:"#ccc", fontWeight:400, position:"relative", zIndex:1 }}>지구카페 찾는 중...</p>
@@ -111,27 +106,20 @@ function HomeScreen() {
     <div style={{ background:"#f0f0f0", height:"100vh", display:"flex", justifyContent:"center", overflow:"hidden" }}>
     <div style={{ width:"100%", maxWidth:480, height:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2.5rem", gap:"1.8rem", position:"relative", overflow:"hidden" }}>
 
-      {/* 서브로고 반복 패턴 */}
+      {/* 스티커 반복 패턴 */}
       <div style={{
         position:"absolute", inset:0,
         display:"grid",
-        gridTemplateColumns:"repeat(4, 1fr)",
-        opacity:0.07, pointerEvents:"none", userSelect:"none",
+        gridTemplateColumns:"repeat(3, 1fr)",
+        opacity:0.08, pointerEvents:"none", userSelect:"none",
         overflow:"hidden",
       }}>
-        {Array.from({length:32}).map((_, i) => {
-          const row = Math.floor(i / 4);
-          const col = i % 4;
-          const isBlue = (row % 2 === 0) ? (col % 2 === 1) : (col % 2 === 0);
-          return (
-            <img key={i} src="sublogo.png" alt="" style={{
-              width:"100%", padding:8,
-              filter: isBlue
-                ? "invert(48%) sepia(90%) saturate(400%) hue-rotate(165deg) brightness(100%)"
-                : "invert(42%) sepia(80%) saturate(400%) hue-rotate(95deg) brightness(95%)",
-            }}/>
-          );
-        })}
+        {Array.from({length:24}).map((_, i) => (
+          <img key={i} src={`sticker${(i % 6) + 1}.png`} alt="" style={{
+            width:"100%", padding:12,
+            objectFit:"contain",
+          }}/>
+        ))}
       </div>
 
       {/* 전체 종이팩 카운터 */}
