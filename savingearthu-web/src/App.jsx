@@ -94,7 +94,7 @@ function HomeScreen() {
       {/* 전체 종이팩 카운터 + 스티커 */}
       {total && (
         <div style={{ position:"relative", zIndex:1, textAlign:"center" }}>
-          <img src="/sticker6.png" alt="" style={{ width:90, objectFit:"contain", marginBottom:6 }}/>
+          <img src="/sticker6.png" alt="" style={{ width:130, objectFit:"contain", marginBottom:6 }}/>
           <p style={{ fontSize:12, color:"#bbb", marginBottom:4, fontWeight:400 }}>
             충무로 지구카페가 함께 모은 종이팩
           </p>
