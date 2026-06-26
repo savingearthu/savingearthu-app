@@ -177,25 +177,15 @@ function TotalStatsBox() {
   if (!total) return null;
 
   return (
-    <div style={{ background:"#f8f8f8", borderRadius:16, padding:"16px", marginBottom:20 }}>
-      <p style={{ fontSize:12, color:"#bbb", textAlign:"center", marginBottom:12, fontWeight:500 }}>
-        충무로 지구카페 전체 현황
+    <div style={{ background:GREEN, borderRadius:16, padding:"20px", marginBottom:20, textAlign:"center" }}>
+      <span className="material-symbols-outlined" style={{ fontSize:28, color:"#fff", display:"block", marginBottom:8 }}>package_2</span>
+      <p style={{ fontSize:13, color:"rgba(255,255,255,0.8)", marginBottom:6, fontWeight:500 }}>
+        {data.cafe}을 포함한 충무로 지구카페가<br/>지금까지 함께 모은 종이팩
       </p>
-      <div style={{ display:"flex", gap:8 }}>
-        {[
-          { icon:"package_2", label:"종이팩",    value:Math.round(total.count).toLocaleString("ko-KR"),  unit:"개"  },
-          { icon:"forest",    label:"살린 나무", value:Number(total.trees).toFixed(1),  unit:"그루" },
-          { icon:"recycling", label:"재생 휴지", value:Math.round(total.tissue).toLocaleString("ko-KR"), unit:"개"  },
-        ].map((s,i) => (
-          <div key={i} style={{ flex:1, background:"#fff", borderRadius:12, padding:"10px 4px", textAlign:"center" }}>
-            <span className="material-symbols-outlined" style={{ fontSize:20, color:GREEN, display:"block", marginBottom:3 }}>{s.icon}</span>
-            <p style={{ fontSize:15, fontWeight:800, color:GREEN, lineHeight:1 }}>
-              {s.value}<span style={{ fontSize:10, color:"#bbb", fontWeight:400, marginLeft:1 }}>{s.unit}</span>
-            </p>
-            <p style={{ fontSize:10, color:"#999", marginTop:3 }}>{s.label}</p>
-          </div>
-        ))}
-      </div>
+      <p style={{ fontSize:42, fontWeight:900, color:"#fff", letterSpacing:-2, lineHeight:1 }}>
+        {Math.round(total.count).toLocaleString("ko-KR")}
+        <span style={{ fontSize:18, fontWeight:500, marginLeft:4 }}>개</span>
+      </p>
     </div>
   );
 }
@@ -282,7 +272,7 @@ function CafePage({ data }) {
         <div style={{ flex:1, overflowY:"auto", padding:"6px 20px 48px", WebkitOverflowScrolling:"touch" }}>
 
           <div style={{ textAlign:"center", marginBottom:10 }}>
-            <img src="sublogo.png" alt="" style={{ width:64, opacity:1 }}/>
+            <img src="/sticker6.png" alt="" style={{ width:64 }}/>
           </div>
 
           <div style={{ textAlign:"center", marginBottom:14 }}>
