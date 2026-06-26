@@ -164,7 +164,7 @@ function HomeScreen() {
 }
 
 // ── 전체 통계 박스 컴포넌트 ──────────────────────────────
-function TotalStatsBox() {
+function TotalStatsBox({ cafeName }) {
   const [total, setTotal] = useState(null);
 
   useEffect(() => {
@@ -180,7 +180,7 @@ function TotalStatsBox() {
     <div style={{ background:GREEN, borderRadius:16, padding:"20px", marginBottom:20, textAlign:"center" }}>
       <span className="material-symbols-outlined" style={{ fontSize:28, color:"#fff", display:"block", marginBottom:8 }}>package_2</span>
       <p style={{ fontSize:13, color:"rgba(255,255,255,0.8)", marginBottom:6, fontWeight:500 }}>
-        {data.cafe}을 포함한 충무로 지구카페가<br/>지금까지 함께 모은 종이팩
+        {cafeName}을 포함한 충무로 지구카페가<br/>지금까지 함께 모은 종이팩
       </p>
       <p style={{ fontSize:42, fontWeight:900, color:"#fff", letterSpacing:-2, lineHeight:1 }}>
         {Math.round(total.count).toLocaleString("ko-KR")}
@@ -352,7 +352,7 @@ function CafePage({ data }) {
           </div>
 
           {/* 전체 지구카페 통계 박스 */}
-          <TotalStatsBox />
+          <TotalStatsBox cafeName={data.cafe} />
 
           <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:28 }}>
             <a href={MAP_URL} target="_blank" rel="noreferrer" style={{ display:"block", width:"100%", padding:"15px", background:BLUE, borderRadius:50, textAlign:"center", fontSize:15, fontWeight:700, color:"#fff", textDecoration:"none" }}>
