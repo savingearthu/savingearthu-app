@@ -68,68 +68,97 @@ function CountUp({ value, style }) {
 
 function HomeScreen() {
   const [cafes, setCafes]     = useState([]);
-  const [open, setOpen]       = useState(false);
   const [loading, setLoading] = useState(true);
-  const [total, setTotal]     = useState(null);
+  const [sort, setSort]       = useState("name");
+  const [search, setSearch]   = useState("");
 
   useEffect(() => {
     fetch(`${API_URL}?action=list`, { redirect:"follow" })
       .then(r => r.json())
-      .then(d => { setCafes((d.cafes || []).sort((a, b) => a.name.localeCompare(b.name, "ko"))); setLoading(false); })
+      .then(d => { setCafes(d.cafes || []); setLoading(false); })
       .catch(() => setLoading(false));
-    fetch(`${API_URL}?action=total`, { redirect:"follow" })
-      .then(r => r.json())
-      .then(d => setTotal(d))
-      .catch(() => {});
   }, []);
 
   function select(cafe) {
     window.location.href = `?cafeId=${encodeURIComponent(cafe.id)}`;
   }
 
+  const filtered = cafes
+    .filter(c => c.name.includes(search))
+    .sort((a, b) => {
+      if (sort === "name") return a.name.localeCompare(b.name, "ko");
+      return (b.count || 0) - (a.count || 0);
+    });
+
   return (
     <div style={{ background:"#f0f0f0", height:"100vh", display:"flex", justifyContent:"center", overflow:"hidden" }}>
-    <div style={{ width:"100%", maxWidth:480, height:"100vh", background:"#fff", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem 2rem", gap:"1.4rem", position:"relative", overflow:"hidden" }}>
+    <div style={{ width:"100%", maxWidth:480, height:"100vh", background:"#fff", display:"flex", flexDirection:"column", position:"relative" }}>
 
-      {/* 전체 종이팩 카운터 + 스티커 */}
-      <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ position:"relative", zIndex:1 }}>
-        <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
-      </a>
+      {/* 상단 헤더 */}
+      <div style={{ padding:"24px 20px 12px", flexShrink:0 }}>
+        <a href={HOME_URL} target="_blank" rel="noreferrer">
+          <img src={LOGO_URL} alt="지소행" style={{ width:120, objectFit:"contain", marginBottom:16 }}/>
+        </a>
 
-      <div style={{ width:"90%", position:"relative", zIndex:100 }}>
-        <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"14px 22px", border:"none", cursor:"pointer" }}>
-          <span style={{ display:"flex", alignItems:"center", gap:10 }}>
-            <span className="material-symbols-outlined" style={{ fontSize:22, color:"#fff" }}>search</span>
-            <span style={{ fontSize:17, color:"#fff", fontWeight:600 }}>지구 카페 찾기</span>
-          </span>
-          <span className="material-symbols-outlined" style={{ fontSize:22, color:"rgba(255,255,255,0.8)", transform: open ? "rotate(180deg)" : "rotate(0deg)", transition:"transform .2s" }}>keyboard_arrow_down</span>
-        </button>
+        {/* 검색 */}
+        <div style={{ display:"flex", alignItems:"center", background:"#f5f5f5", borderRadius:50, padding:"10px 16px", gap:8, marginBottom:12 }}>
+          <span className="material-symbols-outlined" style={{ fontSize:20, color:"#aaa" }}>search</span>
+          <input
+            type="text"
+            placeholder="카페 이름으로 찾기"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{ flex:1, border:"none", background:"transparent", fontSize:15, outline:"none", fontFamily:"Pretendard, sans-serif", color:"#222" }}
+          />
+          {search && (
+            <button onClick={() => setSearch("")} style={{ background:"none", border:"none", cursor:"pointer", fontSize:16, color:"#aaa" }}>✕</button>
+          )}
+        </div>
 
-        {open && (
-          <>
-            <div style={{ position:"fixed", inset:0, zIndex:99 }} onClick={() => setOpen(false)}/>
-            <div style={{ position:"absolute", top:"calc(100% + 8px)", left:0, right:0, background:"#fff", borderRadius:16, boxShadow:"0 8px 32px rgba(0,0,0,0.1)", maxHeight:300, overflowY:"auto", border:"1.5px solid #e8e8e8", zIndex:100 }}>
-              {loading ? (
-                <p style={{ padding:"1rem", textAlign:"center", fontSize:14, color:"#ccc" }}>지구카페 찾는 중...</p>
-              ) : cafes.map((cafe, i) => (
-                <div key={cafe.id} onClick={() => select(cafe)}
-                  style={{ padding:"13px 20px", cursor:"pointer", fontSize:15, color:"#222", borderBottom: i < cafes.length-1 ? "1px solid #f5f5f5" : "none", display:"flex", alignItems:"center", gap:10 }}
-                  onMouseEnter={e => e.currentTarget.style.background="#f5f5f5"}
-                  onMouseLeave={e => e.currentTarget.style.background="#fff"}
-                >
-                  <span style={{ width:6, height:6, borderRadius:"50%", background:BLUE, flexShrink:0, display:"inline-block" }}/>
-                  {cafe.name}
-                </div>
-              ))}
-            </div>
-          </>
-        )}
+        {/* 정렬 버튼 */}
+        <div style={{ display:"flex", gap:8 }}>
+          {[
+            { key:"name",  label:"이름순" },
+            { key:"count", label:"종이팩 많은 순" },
+          ].map(s => (
+            <button key={s.key} onClick={() => setSort(s.key)} style={{
+              padding:"7px 16px", borderRadius:50, border:"none", cursor:"pointer",
+              background: sort === s.key ? BLUE : "#f0f0f0",
+              color: sort === s.key ? "#fff" : "#888",
+              fontSize:13, fontWeight: sort === s.key ? 700 : 400,
+              fontFamily:"Pretendard, sans-serif",
+            }}>{s.label}</button>
+          ))}
+        </div>
       </div>
 
-      <div style={{ position:"absolute", bottom:24, display:"flex", gap:20, zIndex:1 }}>
-        <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
-        <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
-        <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
+      {/* 카페 리스트 */}
+      <div style={{ flex:1, overflowY:"auto", padding:"0 20px 80px" }}>
+        {loading ? (
+          <p style={{ textAlign:"center", color:"#ccc", fontSize:14, paddingTop:40 }}>지구카페 찾는 중...</p>
+        ) : filtered.length === 0 ? (
+          <p style={{ textAlign:"center", color:"#ccc", fontSize:14, paddingTop:40 }}>검색 결과가 없어요</p>
+        ) : filtered.map((cafe) => (
+          <div key={cafe.id} onClick={() => select(cafe)} style={{
+            display:"flex", alignItems:"center", justifyContent:"space-between",
+            padding:"14px 0", borderBottom:"1px solid #f5f5f5",
+            cursor:"pointer",
+          }}>
+            <p style={{ fontSize:15, fontWeight:600, color:"#0a1a2e" }}>{cafe.name}</p>
+            <div style={{ display:"flex", alignItems:"center", gap:4, flexShrink:0 }}>
+              <span style={{ fontSize:14, fontWeight:700, color:GREEN }}>{(cafe.count || 0).toLocaleString("ko-KR")}</span>
+              <span style={{ fontSize:12, color:"#bbb" }}>개</span>
+              <span className="material-symbols-outlined" style={{ fontSize:18, color:"#ddd" }}>chevron_right</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 하단 링크 */}
+      <div style={{ position:"absolute", bottom:0, left:0, right:0, background:"#fff", borderTop:"1px solid #f5f5f5", padding:"12px 0", display:"flex", justifyContent:"center", gap:20 }}>
+        <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
+        <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
+        <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>문의하기</a>
       </div>
     </div>
     </div>
