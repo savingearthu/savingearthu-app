@@ -71,12 +71,17 @@ function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const [sort, setSort]       = useState("name");
   const [search, setSearch]   = useState("");
+  const [total, setTotal]     = useState(null);
 
   useEffect(() => {
     fetch(`${API_URL}?action=list`, { redirect:"follow" })
       .then(r => r.json())
       .then(d => { setCafes(d.cafes || []); setLoading(false); })
       .catch(() => setLoading(false));
+    fetch(`${API_URL}?action=total`, { redirect:"follow" })
+      .then(r => r.json())
+      .then(d => setTotal(d))
+      .catch(() => {});
   }, []);
 
   function select(cafe) {
@@ -92,70 +97,89 @@ function HomeScreen() {
 
   return (
     <div style={{ background:"#f0f0f0", height:"100vh", display:"flex", justifyContent:"center", overflow:"hidden" }}>
-    <div style={{ width:"100%", maxWidth:480, height:"100vh", background:"#fff", display:"flex", flexDirection:"column", position:"relative" }}>
+    <div style={{ width:"100%", maxWidth:480, height:"100vh", background:"#f5f5f5", display:"flex", flexDirection:"column", position:"relative" }}>
 
       {/* 상단 헤더 */}
-      <div style={{ padding:"24px 20px 12px", flexShrink:0 }}>
-        <a href={HOME_URL} target="_blank" rel="noreferrer">
-          <img src={LOGO_URL} alt="지소행" style={{ width:120, objectFit:"contain", marginBottom:16 }}/>
-        </a>
+      <div style={{ background:"#fff", padding:"20px 20px 14px", flexShrink:0 }}>
+        <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:4 }}>
+          <div>
+            <h1 style={{ fontSize:20, fontWeight:800, color:"#0a1a2e", marginBottom:2 }}>충무로 지구카페</h1>
+            <p style={{ fontSize:12, color:"#aaa" }}>
+              함께 모은 종이팩&nbsp;
+              <span style={{ fontWeight:700, color:GREEN }}>{total ? total.count.toLocaleString("ko-KR") : "-"}개</span>
+              &nbsp;·&nbsp;카페 {cafes.length}곳
+            </p>
+          </div>
+          <a href={HOME_URL} target="_blank" rel="noreferrer">
+            <img src={LOGO_URL} alt="지소행" style={{ width:48, objectFit:"contain" }}/>
+          </a>
+        </div>
+      </div>
 
-        {/* 검색 */}
-        <div style={{ display:"flex", alignItems:"center", background:"#f5f5f5", borderRadius:50, padding:"10px 16px", gap:8, marginBottom:12 }}>
-          <span className="material-symbols-outlined" style={{ fontSize:20, color:"#aaa" }}>search</span>
+      {/* 검색 */}
+      <div style={{ background:"#fff", padding:"10px 16px", flexShrink:0 }}>
+        <div style={{ display:"flex", alignItems:"center", background:"#f5f5f5", borderRadius:50, padding:"10px 16px", gap:8 }}>
+          <span className="material-symbols-outlined" style={{ fontSize:18, color:"#aaa" }}>search</span>
           <input
             type="text"
             placeholder="카페 이름으로 찾기"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            style={{ flex:1, border:"none", background:"transparent", fontSize:15, outline:"none", fontFamily:"Pretendard, sans-serif", color:"#222" }}
+            style={{ flex:1, border:"none", background:"transparent", fontSize:14, outline:"none", fontFamily:"Pretendard, sans-serif", color:"#222" }}
           />
           {search && (
-            <button onClick={() => setSearch("")} style={{ background:"none", border:"none", cursor:"pointer", fontSize:16, color:"#aaa" }}>✕</button>
+            <button onClick={() => setSearch("")} style={{ background:"none", border:"none", cursor:"pointer", fontSize:15, color:"#aaa" }}>✕</button>
           )}
-        </div>
-
-        {/* 정렬 버튼 */}
-        <div style={{ display:"flex", gap:8 }}>
-          {[
-            { key:"name",  label:"이름순" },
-            { key:"count", label:"종이팩 많은 순" },
-          ].map(s => (
-            <button key={s.key} onClick={() => setSort(s.key)} style={{
-              padding:"7px 16px", borderRadius:50, border:"none", cursor:"pointer",
-              background: sort === s.key ? BLUE : "#f0f0f0",
-              color: sort === s.key ? "#fff" : "#888",
-              fontSize:13, fontWeight: sort === s.key ? 700 : 400,
-              fontFamily:"Pretendard, sans-serif",
-            }}>{s.label}</button>
-          ))}
         </div>
       </div>
 
+      {/* 정렬 버튼 */}
+      <div style={{ padding:"10px 16px 6px", display:"flex", gap:8, flexShrink:0 }}>
+        {[
+          { key:"name",  label:"이름순" },
+          { key:"count", label:"종이팩 많은 순" },
+        ].map(s => (
+          <button key={s.key} onClick={() => setSort(s.key)} style={{
+            padding:"7px 16px", borderRadius:50, border:"none", cursor:"pointer",
+            background: sort === s.key ? GREEN : "#fff",
+            color: sort === s.key ? "#fff" : "#888",
+            fontSize:13, fontWeight: sort === s.key ? 700 : 400,
+            fontFamily:"Pretendard, sans-serif",
+            boxShadow: sort === s.key ? "none" : "0 1px 4px rgba(0,0,0,0.08)",
+          }}>{s.label}</button>
+        ))}
+      </div>
+
       {/* 카페 리스트 */}
-      <div style={{ flex:1, overflowY:"auto", padding:"0 20px 80px" }}>
+      <div style={{ flex:1, overflowY:"auto", padding:"6px 16px 80px" }}>
         {loading ? (
           <p style={{ textAlign:"center", color:"#ccc", fontSize:14, paddingTop:40 }}>지구카페 찾는 중...</p>
         ) : filtered.length === 0 ? (
           <p style={{ textAlign:"center", color:"#ccc", fontSize:14, paddingTop:40 }}>검색 결과가 없어요</p>
         ) : filtered.map((cafe) => (
           <div key={cafe.id} onClick={() => select(cafe)} style={{
-            display:"flex", alignItems:"center", justifyContent:"space-between",
-            padding:"14px 0", borderBottom:"1px solid #f5f5f5",
-            cursor:"pointer",
+            background:"#fff", borderRadius:16, padding:"14px 16px",
+            marginBottom:10, cursor:"pointer",
+            display:"flex", alignItems:"center", gap:14,
+            boxShadow:"0 1px 4px rgba(0,0,0,0.06)",
           }}>
-            <p style={{ fontSize:15, fontWeight:600, color:"#0a1a2e" }}>{cafe.name}</p>
-            <div style={{ display:"flex", alignItems:"center", gap:4, flexShrink:0 }}>
-              <span style={{ fontSize:14, fontWeight:700, color:GREEN }}>{(cafe.count || 0).toLocaleString("ko-KR")}</span>
-              <span style={{ fontSize:12, color:"#bbb" }}>개</span>
-              <span className="material-symbols-outlined" style={{ fontSize:18, color:"#ddd" }}>chevron_right</span>
+            {/* 썸네일 자리 */}
+            <div style={{ width:60, height:60, borderRadius:12, background:"#e8e8e8", flexShrink:0 }}/>
+            {/* 정보 */}
+            <div style={{ flex:1 }}>
+              <p style={{ fontSize:15, fontWeight:700, color:"#0a1a2e", marginBottom:2 }}>{cafe.name}</p>
+              <div style={{ display:"inline-flex", alignItems:"center", gap:4, background:"#e8f5ee", borderRadius:20, padding:"3px 10px", marginTop:4 }}>
+                <span style={{ fontSize:13, fontWeight:700, color:GREEN }}>{(cafe.count || 0).toLocaleString("ko-KR")}개</span>
+                <span style={{ fontSize:11, color:"#aaa" }}>종이팩</span>
+              </div>
             </div>
+            <span className="material-symbols-outlined" style={{ fontSize:20, color:"#ddd" }}>chevron_right</span>
           </div>
         ))}
       </div>
 
       {/* 하단 링크 */}
-      <div style={{ position:"absolute", bottom:0, left:0, right:0, background:"#fff", borderTop:"1px solid #f5f5f5", padding:"12px 0", display:"flex", justifyContent:"center", gap:20 }}>
+      <div style={{ position:"absolute", bottom:0, left:0, right:0, background:"#fff", borderTop:"1px solid #f0f0f0", padding:"12px 0", display:"flex", justifyContent:"center", gap:20 }}>
         <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
         <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
         <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:12, color:"#bbb", textDecoration:"none" }}>문의하기</a>
