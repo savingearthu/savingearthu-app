@@ -104,7 +104,7 @@ function HomeScreen() {
       </a>
 
       <div style={{ width:"100%", position:"relative", zIndex:100 }}>
-        <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"14px 22px", border:"none", cursor:"pointer" }}>
+        <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius: open ? "20px 20px 0 0" : 50, padding:"14px 22px", border:"none", cursor:"pointer", transition:"border-radius .15s" }}>
           <span style={{ display:"flex", alignItems:"center", gap:10 }}>
             <span className="material-symbols-outlined" style={{ fontSize:22, color:"#fff" }}>search</span>
             <span style={{ fontSize:17, color:"#fff", fontWeight:600 }}>지구 카페 찾기</span>
@@ -115,37 +115,38 @@ function HomeScreen() {
         {open && (
           <>
             <div style={{ position:"fixed", inset:0, zIndex:99 }} onClick={() => setOpen(false)}/>
-            <div style={{ position:"absolute", top:"calc(100% + 8px)", left:0, right:0, background:"#fff", borderRadius:16, boxShadow:"0 8px 32px rgba(0,0,0,0.1)", border:"1.5px solid #e8e8e8", zIndex:100, overflow:"hidden" }}>
+            <div style={{ position:"absolute", top:"100%", left:0, right:0, background:"#fff", borderRadius:"0 0 20px 20px", boxShadow:"0 12px 32px rgba(0,0,0,0.12)", zIndex:100, overflow:"hidden" }}>
 
               {/* 정렬 버튼 */}
-              <div style={{ display:"flex", gap:6, padding:"10px 12px", borderBottom:"1px solid #f0f0f0" }}>
+              <div style={{ display:"flex", gap:6, padding:"14px 16px 10px" }}>
                 {[
                   { key:"name",       label:"이름순" },
                   { key:"count_desc", label:"많은 순" },
                   { key:"count_asc",  label:"적은 순" },
                 ].map(s => (
                   <button key={s.key} onClick={(e) => { e.stopPropagation(); setSort(s.key); }} style={{
-                    flex:1, padding:"6px 0", borderRadius:50, border:"none", cursor:"pointer",
-                    background: sort === s.key ? BLUE : "#f5f5f5",
-                    color: sort === s.key ? "#fff" : "#888",
-                    fontSize:12, fontWeight: sort === s.key ? 700 : 400,
+                    flex:1, padding:"7px 0", borderRadius:8, border:"none", cursor:"pointer",
+                    background: sort === s.key ? "#eef6fd" : "transparent",
+                    color: sort === s.key ? BLUE : "#aaa",
+                    fontSize:12.5, fontWeight: sort === s.key ? 700 : 500,
                     fontFamily:"Pretendard, sans-serif",
+                    transition:"all .15s",
                   }}>{s.label}</button>
                 ))}
               </div>
 
               {/* 카페 리스트 */}
-              <div style={{ maxHeight:260, overflowY:"auto" }}>
+              <div style={{ maxHeight:260, overflowY:"auto", padding:"0 4px 4px" }}>
                 {loading ? (
                   <p style={{ padding:"1rem", textAlign:"center", fontSize:14, color:"#ccc" }}>지구카페 찾는 중...</p>
-                ) : sorted.map((cafe, i) => (
+                ) : sorted.map((cafe) => (
                   <div key={cafe.id} onClick={() => select(cafe)}
-                    style={{ padding:"13px 20px", cursor:"pointer", fontSize:15, color:"#222", borderBottom: i < sorted.length-1 ? "1px solid #f5f5f5" : "none", display:"flex", alignItems:"center", justifyContent:"space-between", gap:10 }}
-                    onMouseEnter={e => e.currentTarget.style.background="#f5f5f5"}
-                    onMouseLeave={e => e.currentTarget.style.background="#fff"}
+                    style={{ margin:"0 12px", padding:"12px 8px", cursor:"pointer", fontSize:14.5, color:"#333", borderBottom:"1px solid #f5f5f5", display:"flex", alignItems:"center", justifyContent:"space-between", gap:10, transition:"background .12s" }}
+                    onMouseEnter={e => e.currentTarget.style.background="#fafafa"}
+                    onMouseLeave={e => e.currentTarget.style.background="transparent"}
                   >
-                    <span>{cafe.name}</span>
-                    <span style={{ fontSize:12, color:GREEN, fontWeight:700, flexShrink:0 }}>{(cafe.count || 0).toLocaleString("ko-KR")}개</span>
+                    <span style={{ fontWeight:500 }}>{cafe.name}</span>
+                    <span style={{ fontSize:13, color:GREEN, fontWeight:700, flexShrink:0 }}>{(cafe.count || 0).toLocaleString("ko-KR")}개</span>
                   </div>
                 ))}
               </div>
