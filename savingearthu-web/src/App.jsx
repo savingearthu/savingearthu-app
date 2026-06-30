@@ -143,7 +143,13 @@ function HomeScreen() {
           </span>
           <span className="material-symbols-outlined" style={{ fontSize:22, color:"rgba(255,255,255,0.8)" }}>keyboard_arrow_down</span>
         </button>
+      </div>
 
+      <p style={{ fontSize:14, color:"#bbb", textAlign:"center", lineHeight:1.9, fontWeight:400 }}>
+        지소행과 함께 종이팩 자원순환을 실천하는<br/>충무로의 지구카페들을 확인해보세요!
+      </p>
+
+      <div style={{ width:"100%", position:"relative", zIndex:100 }}>
         {(open || closing) && (
           <>
             {/* 백드롭 페이드 - 메인화면이 흐릿하게 보임 */}
