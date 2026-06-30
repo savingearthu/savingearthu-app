@@ -119,7 +119,7 @@ function HomeScreen() {
 
               {/* 전체 통계 */}
               {total && (
-                <div style={{ padding:"16px 16px 0", textAlign:"center" }}>
+                <div style={{ padding:"16px 16px 14px", textAlign:"center", borderBottom:"1px solid #f0f0f0" }}>
                   <p style={{ fontSize:11.5, color:"#aaa", marginBottom:2, fontWeight:500 }}>
                     충무로 지구카페가 함께 모은 종이팩
                   </p>
@@ -149,7 +149,7 @@ function HomeScreen() {
               </div>
 
               {/* 카페 리스트 */}
-              <div style={{ maxHeight:260, overflowY:"auto", padding:"0 4px 4px" }}>
+              <div style={{ maxHeight:260, overflowY:"auto", padding:"0 4px 4px", WebkitOverflowScrolling:"touch", touchAction:"pan-y" }} onWheel={e => e.stopPropagation()}>
                 {loading ? (
                   <p style={{ padding:"1rem", textAlign:"center", fontSize:14, color:"#ccc" }}>지구카페 찾는 중...</p>
                 ) : sorted.map((cafe) => (
