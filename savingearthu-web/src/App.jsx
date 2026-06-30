@@ -451,9 +451,6 @@ function CafePage({ data }) {
             </div>
           </div>
 
-          {/* 전체 지구카페 통계 박스 */}
-          <TotalStatsBox cafeName={data.cafe} />
-
           <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:28 }}>
             <a href={MAP_URL} target="_blank" rel="noreferrer" style={{ display:"block", width:"100%", padding:"15px", background:BLUE, borderRadius:50, textAlign:"center", fontSize:15, fontWeight:700, color:"#fff", textDecoration:"none" }}>
               다른 지구 카페 확인하기 →
