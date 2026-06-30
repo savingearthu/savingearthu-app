@@ -70,12 +70,17 @@ function HomeScreen() {
   const [cafes, setCafes]     = useState([]);
   const [open, setOpen]       = useState(false);
   const [closing, setClosing] = useState(false);
+  const [animIn, setAnimIn]   = useState(false);
   const [loading, setLoading] = useState(true);
   const [total, setTotal]     = useState(null);
   const [sort, setSort]       = useState("name");
 
-  function openModal() { setOpen(true); }
+  function openModal() {
+    setOpen(true);
+    requestAnimationFrame(() => requestAnimationFrame(() => setAnimIn(true)));
+  }
   function closeModal() {
+    setAnimIn(false);
     setClosing(true);
     setTimeout(() => { setOpen(false); setClosing(false); }, 250);
   }
@@ -145,7 +150,7 @@ function HomeScreen() {
             <div onClick={closeModal} style={{
               position:"fixed", inset:0, zIndex:199,
               background:"rgba(0,0,0,0.4)",
-              opacity: closing ? 0 : 1,
+              opacity: animIn ? 1 : 0,
               transition:"opacity .25s ease",
             }}/>
 
@@ -154,15 +159,15 @@ function HomeScreen() {
               position:"fixed", inset:0, zIndex:200,
               display:"flex", alignItems:"center", justifyContent:"center",
               padding:"5vh 24px",
-              pointerEvents: closing ? "none" : "auto",
+              pointerEvents: animIn ? "auto" : "none",
             }}>
               <div style={{
                 width:"100%", maxWidth:400, maxHeight:"82vh",
                 background:"#fff", borderRadius:24,
                 boxShadow:"0 20px 60px rgba(0,0,0,0.25)",
                 display:"flex", flexDirection:"column", overflow:"hidden",
-                transform: closing ? "scale(0.92) translateY(10px)" : "scale(1) translateY(0)",
-                opacity: closing ? 0 : 1,
+                transform: animIn ? "scale(1) translateY(0)" : "scale(0.92) translateY(10px)",
+                opacity: animIn ? 1 : 0,
                 transition:"transform .25s cubic-bezier(0.34,1.56,0.64,1), opacity .2s ease",
               }}>
 
@@ -225,7 +230,10 @@ function HomeScreen() {
                       onMouseLeave={e => e.currentTarget.style.background="#f8f8f8"}
                     >
                       <span style={{ fontWeight:600, fontSize:14.5, color:"#222" }}>{cafe.name}</span>
-                      <span style={{ fontSize:13, color:GREEN, fontWeight:700, flexShrink:0 }}>{(cafe.count || 0).toLocaleString("ko-KR")}개</span>
+                      <div style={{ display:"flex", alignItems:"center", gap:6, flexShrink:0 }}>
+                        <span style={{ fontSize:13, color:GREEN, fontWeight:700 }}>{(cafe.count || 0).toLocaleString("ko-KR")}개</span>
+                        <span className="material-symbols-outlined" style={{ fontSize:18, color:"#ccc" }}>chevron_right</span>
+                      </div>
                     </div>
                   ))}
                 </div>
