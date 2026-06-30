@@ -69,9 +69,16 @@ function CountUp({ value, style }) {
 function HomeScreen() {
   const [cafes, setCafes]     = useState([]);
   const [open, setOpen]       = useState(false);
+  const [closing, setClosing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [total, setTotal]     = useState(null);
   const [sort, setSort]       = useState("name");
+
+  function openModal() { setOpen(true); }
+  function closeModal() {
+    setClosing(true);
+    setTimeout(() => { setOpen(false); setClosing(false); }, 250);
+  }
 
   useEffect(() => {
     const cachedCafes = sessionStorage.getItem("cafeList");
@@ -124,7 +131,7 @@ function HomeScreen() {
       </a>
 
       <div style={{ width:"100%", position:"relative", zIndex:100 }}>
-        <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius: open ? "20px 20px 0 0" : 50, padding:"14px 22px", border:"none", cursor:"pointer", transition:"border-radius .15s" }}>
+        <button onClick={() => open ? closeModal() : openModal()} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius: open ? "20px 20px 0 0" : 50, padding:"14px 22px", border:"none", cursor:"pointer", transition:"border-radius .15s" }}>
           <span style={{ display:"flex", alignItems:"center", gap:10 }}>
             <span className="material-symbols-outlined" style={{ fontSize:22, color:"#fff" }}>search</span>
             <span style={{ fontSize:17, color:"#fff", fontWeight:600 }}>지구 카페 찾기</span>
@@ -132,15 +139,28 @@ function HomeScreen() {
           <span className="material-symbols-outlined" style={{ fontSize:22, color:"rgba(255,255,255,0.8)", transform: open ? "rotate(180deg)" : "rotate(0deg)", transition:"transform .2s" }}>keyboard_arrow_down</span>
         </button>
 
-        {open && (
-          <div style={{
-            position:"fixed", inset:0, zIndex:200,
-            background:"#fff",
-            display:"flex", flexDirection:"column",
-          }}>
+        {(open || closing) && (
+          <>
+            {/* 백드롭 페이드 */}
+            <div style={{
+              position:"fixed", inset:0, zIndex:199,
+              background:"rgba(0,0,0,0.35)",
+              opacity: closing ? 0 : 1,
+              transition:"opacity .25s ease",
+            }}/>
+
+            {/* 모달 - 위에서 슬라이드 다운 */}
+            <div style={{
+              position:"fixed", inset:0, zIndex:200,
+              background:"#fff",
+              display:"flex", flexDirection:"column",
+              transform: closing ? "translateY(-100%)" : "translateY(0)",
+              opacity: closing ? 0 : 1,
+              transition:"transform .28s cubic-bezier(0.4,0,0.2,1), opacity .25s ease",
+            }}>
             {/* 모달 상단 헤더 (검색바 자리 유지) */}
             <div style={{ width:"100%", maxWidth:480, margin:"0 auto", padding:"2rem 2.5rem 0", flexShrink:0 }}>
-              <button onClick={() => setOpen(false)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"14px 22px", border:"none", cursor:"pointer" }}>
+              <button onClick={closeModal} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"14px 22px", border:"none", cursor:"pointer" }}>
                 <span style={{ display:"flex", alignItems:"center", gap:10 }}>
                   <span className="material-symbols-outlined" style={{ fontSize:22, color:"#fff" }}>search</span>
                   <span style={{ fontSize:17, color:"#fff", fontWeight:600 }}>지구 카페 찾기</span>
@@ -206,11 +226,12 @@ function HomeScreen() {
               <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
               <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
             </div>
-          </div>
+            </div>
+          </>
         )}
       </div>
 
-      {!open && (
+      {!(open || closing) && (
         <div style={{ position:"absolute", bottom:24, display:"flex", gap:20, zIndex:1 }}>
           <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
           <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
