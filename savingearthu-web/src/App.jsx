@@ -149,34 +149,39 @@ function HomeScreen() {
               transition:"opacity .25s ease",
             }}/>
 
-            {/* 바텀시트 - 화면 78% 차지, 아래에서 슬라이드 업 */}
+            {/* 중앙 떠있는 모달 카드 */}
             <div style={{
-              position:"fixed", left:0, right:0, bottom:0, height:"78vh", zIndex:200,
-              background:"#fff",
-              borderRadius:"24px 24px 0 0",
-              boxShadow:"0 -8px 32px rgba(0,0,0,0.15)",
-              display:"flex", flexDirection:"column",
-              transform: closing ? "translateY(100%)" : "translateY(0)",
-              transition:"transform .3s cubic-bezier(0.4,0,0.2,1)",
+              position:"fixed", inset:0, zIndex:200,
+              display:"flex", alignItems:"center", justifyContent:"center",
+              padding:"5vh 24px",
+              pointerEvents: closing ? "none" : "auto",
             }}>
-              <div style={{ width:"100%", maxWidth:480, margin:"0 auto", flex:1, display:"flex", flexDirection:"column", overflow:"hidden" }}>
-
-                {/* 핸들 */}
-                <div style={{ display:"flex", justifyContent:"center", padding:"10px 0 4px", flexShrink:0 }} onClick={closeModal}>
-                  <div style={{ width:36, height:4, background:"#ddd", borderRadius:2 }}/>
-                </div>
+              <div style={{
+                width:"100%", maxWidth:400, maxHeight:"82vh",
+                background:"#fff", borderRadius:24,
+                boxShadow:"0 20px 60px rgba(0,0,0,0.25)",
+                display:"flex", flexDirection:"column", overflow:"hidden",
+                transform: closing ? "scale(0.92) translateY(10px)" : "scale(1) translateY(0)",
+                opacity: closing ? 0 : 1,
+                transition:"transform .25s cubic-bezier(0.34,1.56,0.64,1), opacity .2s ease",
+              }}>
 
                 {/* 검색 헤더 */}
-                <div style={{ padding:"6px 20px 0", flexShrink:0 }}>
-                  <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}>
-                    <span className="material-symbols-outlined" style={{ fontSize:22, color:BLUE }}>search</span>
-                    <span style={{ fontSize:17, color:"#0a1a2e", fontWeight:700 }}>지구 카페 찾기</span>
+                <div style={{ padding:"20px 20px 0" }}>
+                  <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                      <span className="material-symbols-outlined" style={{ fontSize:22, color:BLUE }}>search</span>
+                      <span style={{ fontSize:17, color:"#0a1a2e", fontWeight:700 }}>지구 카페 찾기</span>
+                    </div>
+                    <button onClick={closeModal} style={{ background:"#f5f5f5", border:"none", borderRadius:"50%", width:30, height:30, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer" }}>
+                      <span className="material-symbols-outlined" style={{ fontSize:18, color:"#999" }}>close</span>
+                    </button>
                   </div>
                 </div>
 
                 {/* 전체 통계 */}
                 {total && (
-                  <div style={{ padding:"12px 20px 14px", textAlign:"center", borderBottom:"1px solid #f0f0f0", flexShrink:0 }}>
+                  <div style={{ padding:"12px 20px 14px", textAlign:"center", borderBottom:"1px solid #f0f0f0" }}>
                     <p style={{ fontSize:11.5, color:"#aaa", marginBottom:2, fontWeight:500 }}>
                       충무로 지구카페가 함께 모은 종이팩
                     </p>
@@ -206,7 +211,7 @@ function HomeScreen() {
                 </div>
 
                 {/* 카페 리스트 - 박스형 */}
-                <div style={{ flex:1, overflowY:"auto", padding:"4px 16px 24px", WebkitOverflowScrolling:"touch" }}>
+                <div style={{ flex:1, overflowY:"auto", padding:"4px 16px 20px", WebkitOverflowScrolling:"touch" }}>
                   {loading ? (
                     <p style={{ padding:"1rem", textAlign:"center", fontSize:14, color:"#ccc" }}>지구카페 찾는 중...</p>
                   ) : sorted.map((cafe) => (
