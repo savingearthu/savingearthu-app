@@ -103,18 +103,6 @@ function HomeScreen() {
         <img src={LOGO_URL} alt="지소행" style={{ width:200, objectFit:"contain" }}/>
       </a>
 
-      {total && (
-        <div style={{ background:"#f0faf4", border:"1px solid #d8eee0", borderRadius:16, padding:"16px 20px", textAlign:"center", width:"100%" }}>
-          <p style={{ fontSize:12, color:"#999", marginBottom:4, fontWeight:500 }}>
-            충무로 지구카페가 함께 모은 종이팩
-          </p>
-          <p style={{ fontSize:30, fontWeight:900, color:GREEN, letterSpacing:-1, lineHeight:1 }}>
-            {total.count.toLocaleString("ko-KR")}
-            <span style={{ fontSize:14, fontWeight:500, color:"#aaa", marginLeft:4 }}>개</span>
-          </p>
-        </div>
-      )}
-
       <div style={{ width:"100%", position:"relative", zIndex:100 }}>
         <button onClick={() => setOpen(o => !o)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius: open ? "20px 20px 0 0" : 50, padding:"14px 22px", border:"none", cursor:"pointer", transition:"border-radius .15s" }}>
           <span style={{ display:"flex", alignItems:"center", gap:10 }}>
@@ -128,6 +116,19 @@ function HomeScreen() {
           <>
             <div style={{ position:"fixed", inset:0, zIndex:99 }} onClick={() => setOpen(false)}/>
             <div style={{ position:"absolute", top:"100%", left:0, right:0, background:"#fff", borderRadius:"0 0 20px 20px", boxShadow:"0 12px 32px rgba(0,0,0,0.12)", zIndex:100, overflow:"hidden" }}>
+
+              {/* 전체 통계 */}
+              {total && (
+                <div style={{ padding:"16px 16px 0", textAlign:"center" }}>
+                  <p style={{ fontSize:11.5, color:"#aaa", marginBottom:2, fontWeight:500 }}>
+                    충무로 지구카페가 함께 모은 종이팩
+                  </p>
+                  <p style={{ fontSize:24, fontWeight:900, color:GREEN, letterSpacing:-1, lineHeight:1 }}>
+                    {total.count.toLocaleString("ko-KR")}
+                    <span style={{ fontSize:13, fontWeight:500, color:"#bbb", marginLeft:3 }}>개</span>
+                  </p>
+                </div>
+              )}
 
               {/* 정렬 버튼 */}
               <div style={{ display:"flex", gap:6, padding:"14px 16px 10px" }}>
