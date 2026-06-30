@@ -131,113 +131,110 @@ function HomeScreen() {
       </a>
 
       <div style={{ width:"100%", position:"relative", zIndex:100 }}>
-        <button onClick={() => open ? closeModal() : openModal()} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius: open ? "20px 20px 0 0" : 50, padding:"14px 22px", border:"none", cursor:"pointer", transition:"border-radius .15s" }}>
+        <button onClick={() => open ? closeModal() : openModal()} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"14px 22px", border:"none", cursor:"pointer" }}>
           <span style={{ display:"flex", alignItems:"center", gap:10 }}>
             <span className="material-symbols-outlined" style={{ fontSize:22, color:"#fff" }}>search</span>
             <span style={{ fontSize:17, color:"#fff", fontWeight:600 }}>지구 카페 찾기</span>
           </span>
-          <span className="material-symbols-outlined" style={{ fontSize:22, color:"rgba(255,255,255,0.8)", transform: open ? "rotate(180deg)" : "rotate(0deg)", transition:"transform .2s" }}>keyboard_arrow_down</span>
+          <span className="material-symbols-outlined" style={{ fontSize:22, color:"rgba(255,255,255,0.8)" }}>keyboard_arrow_down</span>
         </button>
 
         {(open || closing) && (
           <>
-            {/* 백드롭 페이드 */}
-            <div style={{
+            {/* 백드롭 페이드 - 메인화면이 흐릿하게 보임 */}
+            <div onClick={closeModal} style={{
               position:"fixed", inset:0, zIndex:199,
-              background:"rgba(0,0,0,0.35)",
+              background:"rgba(0,0,0,0.4)",
               opacity: closing ? 0 : 1,
               transition:"opacity .25s ease",
             }}/>
 
-            {/* 모달 - 위에서 슬라이드 다운 */}
+            {/* 바텀시트 - 화면 78% 차지, 아래에서 슬라이드 업 */}
             <div style={{
-              position:"fixed", inset:0, zIndex:200,
+              position:"fixed", left:0, right:0, bottom:0, height:"78vh", zIndex:200,
               background:"#fff",
+              borderRadius:"24px 24px 0 0",
+              boxShadow:"0 -8px 32px rgba(0,0,0,0.15)",
               display:"flex", flexDirection:"column",
-              transform: closing ? "translateY(-100%)" : "translateY(0)",
-              opacity: closing ? 0 : 1,
-              transition:"transform .28s cubic-bezier(0.4,0,0.2,1), opacity .25s ease",
+              transform: closing ? "translateY(100%)" : "translateY(0)",
+              transition:"transform .3s cubic-bezier(0.4,0,0.2,1)",
             }}>
-            {/* 모달 상단 헤더 (검색바 자리 유지) */}
-            <div style={{ width:"100%", maxWidth:480, margin:"0 auto", padding:"2rem 2.5rem 0", flexShrink:0 }}>
-              <button onClick={closeModal} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"14px 22px", border:"none", cursor:"pointer" }}>
-                <span style={{ display:"flex", alignItems:"center", gap:10 }}>
-                  <span className="material-symbols-outlined" style={{ fontSize:22, color:"#fff" }}>search</span>
-                  <span style={{ fontSize:17, color:"#fff", fontWeight:600 }}>지구 카페 찾기</span>
-                </span>
-                <span className="material-symbols-outlined" style={{ fontSize:22, color:"rgba(255,255,255,0.8)", transform:"rotate(180deg)" }}>keyboard_arrow_down</span>
-              </button>
-            </div>
+              <div style={{ width:"100%", maxWidth:480, margin:"0 auto", flex:1, display:"flex", flexDirection:"column", overflow:"hidden" }}>
 
-            {/* 모달 콘텐츠 */}
-            <div style={{ width:"100%", maxWidth:480, margin:"0 auto", flex:1, display:"flex", flexDirection:"column", overflow:"hidden", padding:"0 2.5rem" }}>
-
-              {/* 전체 통계 */}
-              {total && (
-                <div style={{ padding:"16px 0 14px", textAlign:"center", borderBottom:"1px solid #f0f0f0", flexShrink:0 }}>
-                  <p style={{ fontSize:11.5, color:"#aaa", marginBottom:2, fontWeight:500 }}>
-                    충무로 지구카페가 함께 모은 종이팩
-                  </p>
-                  <p style={{ fontSize:24, fontWeight:900, color:GREEN, letterSpacing:-1, lineHeight:1 }}>
-                    {total.count.toLocaleString("ko-KR")}
-                    <span style={{ fontSize:13, fontWeight:500, color:"#bbb", marginLeft:3 }}>개</span>
-                  </p>
+                {/* 핸들 */}
+                <div style={{ display:"flex", justifyContent:"center", padding:"10px 0 4px", flexShrink:0 }} onClick={closeModal}>
+                  <div style={{ width:36, height:4, background:"#ddd", borderRadius:2 }}/>
                 </div>
-              )}
 
-              {/* 정렬 버튼 */}
-              <div style={{ display:"flex", gap:6, padding:"14px 0 10px", flexShrink:0 }}>
-                {[
-                  { key:"name",       label:"이름순" },
-                  { key:"count_desc", label:"많은 순" },
-                  { key:"count_asc",  label:"적은 순" },
-                ].map(s => (
-                  <button key={s.key} onClick={() => setSort(s.key)} style={{
-                    flex:1, padding:"7px 0", borderRadius:8, border:"none", cursor:"pointer",
-                    background: sort === s.key ? "#eef6fd" : "transparent",
-                    color: sort === s.key ? BLUE : "#aaa",
-                    fontSize:12.5, fontWeight: sort === s.key ? 700 : 500,
-                    fontFamily:"Pretendard, sans-serif",
-                    transition:"all .15s",
-                  }}>{s.label}</button>
-                ))}
-              </div>
-
-              {/* 카페 리스트 */}
-              <div style={{ flex:1, overflowY:"auto", padding:"0 4px 20px", WebkitOverflowScrolling:"touch" }}>
-                {loading ? (
-                  <p style={{ padding:"1rem", textAlign:"center", fontSize:14, color:"#ccc" }}>지구카페 찾는 중...</p>
-                ) : sorted.map((cafe) => (
-                  <div key={cafe.id} onClick={() => select(cafe)}
-                    style={{ margin:"0 12px", padding:"12px 8px", cursor:"pointer", fontSize:14.5, color:"#333", borderBottom:"1px solid #f5f5f5", display:"flex", alignItems:"center", justifyContent:"space-between", gap:10, transition:"background .12s" }}
-                    onMouseEnter={e => e.currentTarget.style.background="#fafafa"}
-                    onMouseLeave={e => e.currentTarget.style.background="transparent"}
-                  >
-                    <span style={{ fontWeight:500 }}>{cafe.name}</span>
-                    <span style={{ fontSize:13, color:GREEN, fontWeight:700, flexShrink:0 }}>{(cafe.count || 0).toLocaleString("ko-KR")}개</span>
+                {/* 검색 헤더 */}
+                <div style={{ padding:"6px 20px 0", flexShrink:0 }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}>
+                    <span className="material-symbols-outlined" style={{ fontSize:22, color:BLUE }}>search</span>
+                    <span style={{ fontSize:17, color:"#0a1a2e", fontWeight:700 }}>지구 카페 찾기</span>
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
 
-            {/* 하단 링크 */}
-            <div style={{ width:"100%", maxWidth:480, margin:"0 auto", padding:"12px 2.5rem 20px", display:"flex", justifyContent:"center", gap:20, flexShrink:0 }}>
-              <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
-              <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
-              <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
-            </div>
+                {/* 전체 통계 */}
+                {total && (
+                  <div style={{ padding:"12px 20px 14px", textAlign:"center", borderBottom:"1px solid #f0f0f0", flexShrink:0 }}>
+                    <p style={{ fontSize:11.5, color:"#aaa", marginBottom:2, fontWeight:500 }}>
+                      충무로 지구카페가 함께 모은 종이팩
+                    </p>
+                    <p style={{ fontSize:24, fontWeight:900, color:GREEN, letterSpacing:-1, lineHeight:1 }}>
+                      {total.count.toLocaleString("ko-KR")}
+                      <span style={{ fontSize:13, fontWeight:500, color:"#bbb", marginLeft:3 }}>개</span>
+                    </p>
+                  </div>
+                )}
+
+                {/* 정렬 버튼 */}
+                <div style={{ display:"flex", gap:6, padding:"14px 20px 10px", flexShrink:0 }}>
+                  {[
+                    { key:"name",       label:"이름순" },
+                    { key:"count_desc", label:"많은 순" },
+                    { key:"count_asc",  label:"적은 순" },
+                  ].map(s => (
+                    <button key={s.key} onClick={() => setSort(s.key)} style={{
+                      flex:1, padding:"7px 0", borderRadius:8, border:"none", cursor:"pointer",
+                      background: sort === s.key ? "#eef6fd" : "#f7f7f7",
+                      color: sort === s.key ? BLUE : "#aaa",
+                      fontSize:12.5, fontWeight: sort === s.key ? 700 : 500,
+                      fontFamily:"Pretendard, sans-serif",
+                      transition:"all .15s",
+                    }}>{s.label}</button>
+                  ))}
+                </div>
+
+                {/* 카페 리스트 - 박스형 */}
+                <div style={{ flex:1, overflowY:"auto", padding:"4px 16px 24px", WebkitOverflowScrolling:"touch" }}>
+                  {loading ? (
+                    <p style={{ padding:"1rem", textAlign:"center", fontSize:14, color:"#ccc" }}>지구카페 찾는 중...</p>
+                  ) : sorted.map((cafe) => (
+                    <div key={cafe.id} onClick={() => select(cafe)} style={{
+                      background:"#f8f8f8", borderRadius:14, padding:"14px 16px",
+                      marginBottom:8, cursor:"pointer",
+                      display:"flex", alignItems:"center", justifyContent:"space-between", gap:10,
+                      transition:"background .12s",
+                    }}
+                      onMouseEnter={e => e.currentTarget.style.background="#f0f0f0"}
+                      onMouseLeave={e => e.currentTarget.style.background="#f8f8f8"}
+                    >
+                      <span style={{ fontWeight:600, fontSize:14.5, color:"#222" }}>{cafe.name}</span>
+                      <span style={{ fontSize:13, color:GREEN, fontWeight:700, flexShrink:0 }}>{(cafe.count || 0).toLocaleString("ko-KR")}개</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </>
         )}
       </div>
 
-      {!(open || closing) && (
-        <div style={{ position:"absolute", bottom:24, display:"flex", gap:20, zIndex:1 }}>
-          <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
-          <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
-          <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
-        </div>
-      )}
+      <div style={{ position:"absolute", bottom:24, display:"flex", gap:20, zIndex:1 }}>
+        <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
+        <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
+        <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
+      </div>
     </div>
     </div>
   );
