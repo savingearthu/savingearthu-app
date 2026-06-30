@@ -133,13 +133,28 @@ function HomeScreen() {
         </button>
 
         {open && (
-          <>
-            <div style={{ position:"fixed", inset:0, zIndex:99 }} onClick={() => setOpen(false)}/>
-            <div style={{ position:"absolute", top:"100%", left:0, right:0, background:"#fff", borderRadius:"0 0 20px 20px", boxShadow:"0 12px 32px rgba(0,0,0,0.12)", zIndex:100, overflow:"hidden" }}>
+          <div style={{
+            position:"fixed", inset:0, zIndex:200,
+            background:"#fff",
+            display:"flex", flexDirection:"column",
+          }}>
+            {/* 모달 상단 헤더 (검색바 자리 유지) */}
+            <div style={{ width:"100%", maxWidth:480, margin:"0 auto", padding:"2rem 2.5rem 0", flexShrink:0 }}>
+              <button onClick={() => setOpen(false)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:BLUE, borderRadius:50, padding:"14px 22px", border:"none", cursor:"pointer" }}>
+                <span style={{ display:"flex", alignItems:"center", gap:10 }}>
+                  <span className="material-symbols-outlined" style={{ fontSize:22, color:"#fff" }}>search</span>
+                  <span style={{ fontSize:17, color:"#fff", fontWeight:600 }}>지구 카페 찾기</span>
+                </span>
+                <span className="material-symbols-outlined" style={{ fontSize:22, color:"rgba(255,255,255,0.8)", transform:"rotate(180deg)" }}>keyboard_arrow_down</span>
+              </button>
+            </div>
+
+            {/* 모달 콘텐츠 */}
+            <div style={{ width:"100%", maxWidth:480, margin:"0 auto", flex:1, display:"flex", flexDirection:"column", overflow:"hidden", padding:"0 2.5rem" }}>
 
               {/* 전체 통계 */}
               {total && (
-                <div style={{ padding:"16px 16px 14px", textAlign:"center", borderBottom:"1px solid #f0f0f0" }}>
+                <div style={{ padding:"16px 0 14px", textAlign:"center", borderBottom:"1px solid #f0f0f0", flexShrink:0 }}>
                   <p style={{ fontSize:11.5, color:"#aaa", marginBottom:2, fontWeight:500 }}>
                     충무로 지구카페가 함께 모은 종이팩
                   </p>
@@ -151,13 +166,13 @@ function HomeScreen() {
               )}
 
               {/* 정렬 버튼 */}
-              <div style={{ display:"flex", gap:6, padding:"14px 16px 10px" }}>
+              <div style={{ display:"flex", gap:6, padding:"14px 0 10px", flexShrink:0 }}>
                 {[
                   { key:"name",       label:"이름순" },
                   { key:"count_desc", label:"많은 순" },
                   { key:"count_asc",  label:"적은 순" },
                 ].map(s => (
-                  <button key={s.key} onClick={(e) => { e.stopPropagation(); setSort(s.key); }} style={{
+                  <button key={s.key} onClick={() => setSort(s.key)} style={{
                     flex:1, padding:"7px 0", borderRadius:8, border:"none", cursor:"pointer",
                     background: sort === s.key ? "#eef6fd" : "transparent",
                     color: sort === s.key ? BLUE : "#aaa",
@@ -169,7 +184,7 @@ function HomeScreen() {
               </div>
 
               {/* 카페 리스트 */}
-              <div style={{ maxHeight:260, overflowY:"auto", padding:"0 4px 4px", WebkitOverflowScrolling:"touch", touchAction:"pan-y" }} onWheel={e => e.stopPropagation()}>
+              <div style={{ flex:1, overflowY:"auto", padding:"0 4px 20px", WebkitOverflowScrolling:"touch" }}>
                 {loading ? (
                   <p style={{ padding:"1rem", textAlign:"center", fontSize:14, color:"#ccc" }}>지구카페 찾는 중...</p>
                 ) : sorted.map((cafe) => (
@@ -184,15 +199,24 @@ function HomeScreen() {
                 ))}
               </div>
             </div>
-          </>
+
+            {/* 하단 링크 */}
+            <div style={{ width:"100%", maxWidth:480, margin:"0 auto", padding:"12px 2.5rem 20px", display:"flex", justifyContent:"center", gap:20, flexShrink:0 }}>
+              <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
+              <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
+              <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
+            </div>
+          </div>
         )}
       </div>
 
-      <div style={{ position:"absolute", bottom:24, display:"flex", gap:20, zIndex:1 }}>
-        <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
-        <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
-        <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
-      </div>
+      {!open && (
+        <div style={{ position:"absolute", bottom:24, display:"flex", gap:20, zIndex:1 }}>
+          <a href={INSTA_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>인스타그램</a>
+          <a href={HOME_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>홈페이지</a>
+          <a href={CONTACT_URL} target="_blank" rel="noreferrer" style={{ fontSize:13, color:"#bbb", textDecoration:"none" }}>문의하기</a>
+        </div>
+      )}
     </div>
     </div>
   );
