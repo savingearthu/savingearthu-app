@@ -179,14 +179,14 @@ function TotalStatsBox({ cafeName }) {
   if (!total) return null;
 
   return (
-    <div style={{ background:GREEN, borderRadius:16, padding:"20px", marginBottom:20, textAlign:"center" }}>
-      <span className="material-symbols-outlined" style={{ fontSize:28, color:"#fff", display:"block", marginBottom:8 }}>package_2</span>
-      <p style={{ fontSize:13, color:"rgba(255,255,255,0.8)", marginBottom:6, fontWeight:500 }}>
+    <div style={{ background:"#f0faf4", border:"1px solid #d8eee0", borderRadius:16, padding:"20px", marginBottom:20, textAlign:"center" }}>
+      <span className="material-symbols-outlined" style={{ fontSize:26, color:GREEN, display:"block", marginBottom:8 }}>package_2</span>
+      <p style={{ fontSize:12, color:"#999", marginBottom:6, fontWeight:500, lineHeight:1.5 }}>
         {cafeName}을 포함한 충무로 지구카페가<br/>지금까지 함께 모은 종이팩
       </p>
-      <p style={{ fontSize:42, fontWeight:900, color:"#fff", letterSpacing:-2, lineHeight:1 }}>
+      <p style={{ fontSize:38, fontWeight:900, color:GREEN, letterSpacing:-2, lineHeight:1 }}>
         {Math.round(total.count).toLocaleString("ko-KR")}
-        <span style={{ fontSize:18, fontWeight:500, marginLeft:4 }}>개</span>
+        <span style={{ fontSize:16, fontWeight:500, color:"#aaa", marginLeft:4 }}>개</span>
       </p>
     </div>
   );
@@ -274,7 +274,7 @@ function CafePage({ data }) {
         <div style={{ flex:1, overflowY:"auto", padding:"6px 20px 48px", WebkitOverflowScrolling:"touch" }}>
 
           <div style={{ textAlign:"center", marginBottom:10 }}>
-            <img src="/sticker6.png" alt="" style={{ width:64 }}/>
+            <img src="/sticker6.png" alt="" style={{ width:90 }}/>
           </div>
 
           <div style={{ textAlign:"center", marginBottom:14 }}>
