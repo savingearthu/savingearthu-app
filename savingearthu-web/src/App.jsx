@@ -74,13 +74,33 @@ function HomeScreen() {
   const [sort, setSort]       = useState("name");
 
   useEffect(() => {
+    const cachedCafes = sessionStorage.getItem("cafeList");
+    const cachedTotal = sessionStorage.getItem("totalStats");
+
+    if (cachedCafes) {
+      setCafes(JSON.parse(cachedCafes));
+      setLoading(false);
+    }
+    if (cachedTotal) {
+      setTotal(JSON.parse(cachedTotal));
+    }
+
     fetch(`${API_URL}?action=list`, { redirect:"follow" })
       .then(r => r.json())
-      .then(d => { setCafes(d.cafes || []); setLoading(false); })
+      .then(d => {
+        const list = d.cafes || [];
+        setCafes(list);
+        setLoading(false);
+        sessionStorage.setItem("cafeList", JSON.stringify(list));
+      })
       .catch(() => setLoading(false));
+
     fetch(`${API_URL}?action=total`, { redirect:"follow" })
       .then(r => r.json())
-      .then(d => setTotal(d))
+      .then(d => {
+        setTotal(d);
+        sessionStorage.setItem("totalStats", JSON.stringify(d));
+      })
       .catch(() => {});
   }, []);
 
@@ -180,12 +200,16 @@ function HomeScreen() {
 
 // ── 전체 통계 박스 컴포넌트 ──────────────────────────────
 function TotalStatsBox({ cafeName }) {
-  const [total, setTotal] = useState(null);
+  const cached = sessionStorage.getItem("totalStats");
+  const [total, setTotal] = useState(cached ? JSON.parse(cached) : null);
 
   useEffect(() => {
     fetch(`${API_URL}?action=total`, { redirect:"follow" })
       .then(r => r.json())
-      .then(d => setTotal(d))
+      .then(d => {
+        setTotal(d);
+        sessionStorage.setItem("totalStats", JSON.stringify(d));
+      })
       .catch(() => {});
   }, []);
 
@@ -402,8 +426,11 @@ export default function App() {
 }
 
 function CafeDetailLoader({ cafeId }) {
-  const [status, setStatus] = useState("loading");
-  const [data, setData]     = useState(null);
+  const cacheKey = `cafeDetail_${cafeId}`;
+  const cached = sessionStorage.getItem(cacheKey);
+
+  const [status, setStatus] = useState(cached ? "ok" : "loading");
+  const [data, setData]     = useState(cached ? JSON.parse(cached) : null);
   const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
@@ -411,9 +438,15 @@ function CafeDetailLoader({ cafeId }) {
       .then(r => r.json())
       .then(d => {
         if (!d.cafe) { setErrMsg(`등록된 카페를 찾지 못했어요. (${cafeId})`); setStatus("error"); }
-        else { setData(d); setStatus("ok"); }
+        else {
+          setData(d);
+          setStatus("ok");
+          sessionStorage.setItem(cacheKey, JSON.stringify(d));
+        }
       })
-      .catch(e => { setErrMsg(e.message); setStatus("error"); });
+      .catch(e => {
+        if (!cached) { setErrMsg(e.message); setStatus("error"); }
+      });
   }, [cafeId]);
 
   if (status === "loading") return <LoadingScreen />;
