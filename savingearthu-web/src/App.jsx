@@ -172,7 +172,7 @@ function HomeScreen() {
               pointerEvents: animIn ? "auto" : "none",
             }}>
               <div style={{
-                width:"100%", maxWidth:400, maxHeight:"82vh",
+                width:"100%", maxWidth:400, height:"82vh",
                 background:"#fff", borderRadius:24,
                 boxShadow:"0 20px 60px rgba(0,0,0,0.25)",
                 display:"flex", flexDirection:"column", overflow:"hidden",
