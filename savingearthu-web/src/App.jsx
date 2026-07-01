@@ -197,7 +197,7 @@ function HomeScreen() {
                       placeholder="카페 이름으로 찾기"
                       value={search}
                       onChange={e => setSearch(e.target.value)}
-                      style={{ flex:1, border:"none", background:"transparent", fontSize:14, outline:"none", fontFamily:"Pretendard, sans-serif", color:"#222" }}
+                      style={{ flex:1, border:"none", background:"transparent", fontSize:16, outline:"none", fontFamily:"Pretendard, sans-serif", color:"#222" }}
                     />
                     {search && (
                       <button onClick={() => setSearch("")} style={{ background:"none", border:"none", cursor:"pointer", fontSize:14, color:"#aaa" }}>✕</button>
