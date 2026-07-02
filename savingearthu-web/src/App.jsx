@@ -391,7 +391,7 @@ function CafePage({ data }) {
 
           <div style={{ textAlign:"center", marginBottom:14 }}>
             <span style={{ display:"inline-block", background:"#e8f5ee", borderRadius:20, padding:"5px 16px", fontSize:13, color:GREEN, fontWeight:600 }}>
-              2025년부터 함께하는 지구카페
+              종이팩이 다시 태어나는 곳
             </span>
           </div>
 
