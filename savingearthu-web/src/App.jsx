@@ -47,25 +47,6 @@ function ErrorScreen({ detail }) {
   );
 }
 
-function CountUp({ value, style }) {
-  const [display, setDisplay] = useState(0);
-  useEffect(() => {
-    if (!value) return;
-    const duration = 800;
-    const steps = 60;
-    const increment = value / steps;
-    let step = 0;
-    const timer = setInterval(() => {
-      step++;
-      const current = Math.min(Math.round(increment * step), value);
-      setDisplay(current);
-      if (step >= steps) clearInterval(timer);
-    }, duration / steps);
-    return () => clearInterval(timer);
-  }, [value]);
-  return <span style={style}>{display.toLocaleString("ko-KR")}</span>;
-}
-
 function HomeScreen() {
   const [cafes, setCafes]     = useState([]);
   const [open, setOpen]       = useState(false);
@@ -73,7 +54,6 @@ function HomeScreen() {
   const [animIn, setAnimIn]   = useState(false);
   const [loading, setLoading] = useState(true);
   const [total, setTotal]     = useState(null);
-  const [sort, setSort]       = useState("name");
   const [search, setSearch]   = useState("");
 
   function openModal() {
@@ -90,14 +70,8 @@ function HomeScreen() {
   useEffect(() => {
     const cachedCafes = sessionStorage.getItem("cafeList");
     const cachedTotal = sessionStorage.getItem("totalStats");
-
-    if (cachedCafes) {
-      setCafes(JSON.parse(cachedCafes));
-      setLoading(false);
-    }
-    if (cachedTotal) {
-      setTotal(JSON.parse(cachedTotal));
-    }
+    if (cachedCafes) { setCafes(JSON.parse(cachedCafes)); setLoading(false); }
+    if (cachedTotal) { setTotal(JSON.parse(cachedTotal)); }
 
     fetch(`${API_URL}?action=list`, { redirect:"follow" })
       .then(r => r.json())
@@ -111,10 +85,7 @@ function HomeScreen() {
 
     fetch(`${API_URL}?action=total`, { redirect:"follow" })
       .then(r => r.json())
-      .then(d => {
-        setTotal(d);
-        sessionStorage.setItem("totalStats", JSON.stringify(d));
-      })
+      .then(d => { setTotal(d); sessionStorage.setItem("totalStats", JSON.stringify(d)); })
       .catch(() => {});
   }, []);
 
@@ -124,12 +95,7 @@ function HomeScreen() {
 
   const sorted = [...cafes]
     .filter(c => c.name.includes(search))
-    .sort((a, b) => {
-    if (sort === "name")       return a.name.localeCompare(b.name, "ko");
-    if (sort === "count_desc") return (b.count || 0) - (a.count || 0);
-    if (sort === "count_asc")  return (a.count || 0) - (b.count || 0);
-    return 0;
-  });
+    .sort((a, b) => a.name.localeCompare(b.name, "ko"));
 
   return (
     <div style={{ background:"#f0f0f0", height:"100vh", display:"flex", justifyContent:"center", overflow:"hidden" }}>
@@ -156,7 +122,6 @@ function HomeScreen() {
       <div style={{ width:"100%", position:"relative", zIndex:100 }}>
         {(open || closing) && (
           <>
-            {/* 백드롭 페이드 - 메인화면이 흐릿하게 보임 */}
             <div onClick={closeModal} style={{
               position:"fixed", inset:0, zIndex:199,
               background:"rgba(0,0,0,0.4)",
@@ -164,7 +129,6 @@ function HomeScreen() {
               transition:"opacity .25s ease",
             }}/>
 
-            {/* 중앙 떠있는 모달 카드 */}
             <div style={{
               position:"fixed", inset:0, zIndex:200,
               display:"flex", alignItems:"center", justifyContent:"center",
@@ -182,14 +146,13 @@ function HomeScreen() {
               }}>
 
                 {/* 검색 헤더 */}
-                <div style={{ padding:"20px 20px 12px" }}>
+                <div style={{ padding:"20px 20px 12px", flexShrink:0 }}>
                   <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
                     <span style={{ fontSize:17, color:"#0a1a2e", fontWeight:700 }}>지구 카페 찾기</span>
                     <button onClick={closeModal} style={{ background:"#f5f5f5", border:"none", borderRadius:"50%", width:30, height:30, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer" }}>
                       <span className="material-symbols-outlined" style={{ fontSize:18, color:"#999" }}>close</span>
                     </button>
                   </div>
-                  {/* 검색 입력창 */}
                   <div style={{ display:"flex", alignItems:"center", background:"#f5f5f5", borderRadius:50, padding:"9px 16px", gap:8 }}>
                     <span className="material-symbols-outlined" style={{ fontSize:18, color:"#aaa" }}>search</span>
                     <input
@@ -204,9 +167,10 @@ function HomeScreen() {
                     )}
                   </div>
                 </div>
+
                 {/* 전체 통계 */}
                 {total && (
-                  <div style={{ padding:"12px 20px 14px", textAlign:"center", borderBottom:"1px solid #f0f0f0" }}>
+                  <div style={{ padding:"12px 20px 14px", textAlign:"center", borderBottom:"1px solid #f0f0f0", flexShrink:0 }}>
                     <p style={{ fontSize:11.5, color:"#aaa", marginBottom:2, fontWeight:500 }}>
                       충무로 지구카페가 함께 모은 종이팩
                     </p>
@@ -217,24 +181,8 @@ function HomeScreen() {
                   </div>
                 )}
 
-                {/* 정렬 버튼 */}
-                <div style={{ display:"flex", gap:6, padding:"14px 20px 10px", flexShrink:0 }}>
-                  {[
-                    { key:"name", label:"이름순" },
-                  ].map(s => (
-                    <button key={s.key} onClick={() => setSort(s.key)} style={{
-                      flex:1, padding:"7px 0", borderRadius:8, border:"none", cursor:"pointer",
-                      background: sort === s.key ? "#eef6fd" : "#f7f7f7",
-                      color: sort === s.key ? BLUE : "#aaa",
-                      fontSize:12.5, fontWeight: sort === s.key ? 700 : 500,
-                      fontFamily:"Pretendard, sans-serif",
-                      transition:"all .15s",
-                    }}>{s.label}</button>
-                  ))}
-                </div>
-
-                {/* 카페 리스트 - 박스형 */}
-                <div style={{ flex:1, overflowY:"auto", padding:"4px 16px 20px", WebkitOverflowScrolling:"touch" }}>
+                {/* 카페 리스트 */}
+                <div style={{ flex:1, overflowY:"auto", padding:"8px 16px 20px", WebkitOverflowScrolling:"touch" }}>
                   {loading ? (
                     <p style={{ padding:"1rem", textAlign:"center", fontSize:14, color:"#ccc" }}>지구카페 찾는 중...</p>
                   ) : sorted.map((cafe) => (
@@ -268,7 +216,6 @@ function HomeScreen() {
   );
 }
 
-// ── 전체 통계 박스 컴포넌트 ──────────────────────────────
 function TotalStatsBox({ cafeName }) {
   const cached = sessionStorage.getItem("totalStats");
   const [total, setTotal] = useState(cached ? JSON.parse(cached) : null);
@@ -276,10 +223,7 @@ function TotalStatsBox({ cafeName }) {
   useEffect(() => {
     fetch(`${API_URL}?action=total`, { redirect:"follow" })
       .then(r => r.json())
-      .then(d => {
-        setTotal(d);
-        sessionStorage.setItem("totalStats", JSON.stringify(d));
-      })
+      .then(d => { setTotal(d); sessionStorage.setItem("totalStats", JSON.stringify(d)); })
       .catch(() => {});
   }, []);
 
@@ -298,7 +242,6 @@ function TotalStatsBox({ cafeName }) {
     </div>
   );
 }
-// ─────────────────────────────────────────────────────────
 
 function CafePage({ data }) {
   const handleRef  = useRef(null);
@@ -505,15 +448,9 @@ function CafeDetailLoader({ cafeId }) {
       .then(r => r.json())
       .then(d => {
         if (!d.cafe) { setErrMsg(`등록된 카페를 찾지 못했어요. (${cafeId})`); setStatus("error"); }
-        else {
-          setData(d);
-          setStatus("ok");
-          sessionStorage.setItem(cacheKey, JSON.stringify(d));
-        }
+        else { setData(d); setStatus("ok"); sessionStorage.setItem(cacheKey, JSON.stringify(d)); }
       })
-      .catch(e => {
-        if (!cached) { setErrMsg(e.message); setStatus("error"); }
-      });
+      .catch(e => { if (!cached) { setErrMsg(e.message); setStatus("error"); } });
   }, [cafeId]);
 
   if (status === "loading") return <LoadingScreen />;
