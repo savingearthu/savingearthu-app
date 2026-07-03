@@ -220,9 +220,7 @@ function HomeScreen() {
                 {/* 정렬 버튼 */}
                 <div style={{ display:"flex", gap:6, padding:"14px 20px 10px", flexShrink:0 }}>
                   {[
-                    { key:"name",       label:"이름순" },
-                    { key:"count_desc", label:"많은 순" },
-                    { key:"count_asc",  label:"적은 순" },
+                    { key:"name", label:"이름순" },
                   ].map(s => (
                     <button key={s.key} onClick={() => setSort(s.key)} style={{
                       flex:1, padding:"7px 0", borderRadius:8, border:"none", cursor:"pointer",
@@ -250,10 +248,7 @@ function HomeScreen() {
                       onMouseLeave={e => e.currentTarget.style.background="#f8f8f8"}
                     >
                       <span style={{ fontWeight:600, fontSize:14.5, color:"#222" }}>{cafe.name}</span>
-                      <div style={{ display:"flex", alignItems:"center", gap:6, flexShrink:0 }}>
-                        <span style={{ fontSize:13, color:GREEN, fontWeight:700 }}>{(cafe.count || 0).toLocaleString("ko-KR")}개</span>
-                        <span className="material-symbols-outlined" style={{ fontSize:18, color:"#ccc" }}>chevron_right</span>
-                      </div>
+                      <span className="material-symbols-outlined" style={{ fontSize:18, color:"#ccc" }}>chevron_right</span>
                     </div>
                   ))}
                 </div>
