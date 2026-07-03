@@ -248,7 +248,7 @@ function CafePage({ data }) {
   const isDragging = useRef(false);
   const startY     = useRef(0);
   const startTop   = useRef(0);
-  const PHOTO_H    = 240;
+  const PHOTO_H    = 180;
   const MIN_TOP    = 60;
   const INIT_TOP   = PHOTO_H - 20;
   const [sheetTop, setSheetTop] = useState(INIT_TOP);
