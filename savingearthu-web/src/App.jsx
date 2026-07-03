@@ -337,7 +337,7 @@ function CafePage({ data }) {
             {data.cafe}
           </h1>
 
-          <div style={{ display:"flex", gap:8, marginBottom:24 }}>
+          <div style={{ display:"flex", gap:8, marginBottom:32 }}>
             {STATS.map((s,i) => (
               <div key={i} style={{ flex:1, background:"#f0faf4", borderRadius:14, padding:"12px 4px", textAlign:"center" }}>
                 <span className="material-symbols-outlined" style={{ fontSize:22, color:GREEN, display:"block", marginBottom:5 }}>{s.icon}</span>
@@ -351,7 +351,7 @@ function CafePage({ data }) {
 
           <p style={{ fontSize:16, fontWeight:700, color:"#0a1a2e", marginBottom:4, textAlign:"center" }}>자원순환 구조</p>
           <p style={{ fontSize:12, color:"#bbb", textAlign:"center", marginBottom:12 }}>버려지는 종이팩이 따뜻한 마음이 되기까지</p>
-          <div style={{ marginBottom:24 }}>
+          <div style={{ marginBottom:32 }}>
             <div style={{ display:"flex", alignItems:"center", gap:2, marginBottom:6 }}>
               {FLOW_ROW1.map((f, i) => (
                 <div key={i} style={{ display:"flex", alignItems:"center", flex:1 }}>
@@ -383,7 +383,7 @@ function CafePage({ data }) {
           </div>
 
           <p style={{ fontSize:16, fontWeight:700, color:"#0a1a2e", marginBottom:12, textAlign:"center" }}>함께하는 사람들</p>
-          <div style={{ display:"flex", borderRadius:14, overflow:"hidden", border:"1px solid #eef2f8", marginBottom:24 }}>
+          <div style={{ display:"flex", borderRadius:14, overflow:"hidden", border:"1px solid #eef2f8", marginBottom:32 }}>
             <div style={{ flex:1, background:"#f7fafe" }}>
               <img src={TEACHER_IMG} alt="황무연 선생님" style={{ width:"100%", height:120, objectFit:"cover", objectPosition:"center top", display:"block" }}/>
               <div style={{ padding:"14px 12px 16px", textAlign:"center" }}>
