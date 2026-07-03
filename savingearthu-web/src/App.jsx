@@ -327,13 +327,13 @@ function CafePage({ data }) {
             <img src="/sticker6.png" alt="" style={{ width:120 }}/>
           </div>
 
-          <div style={{ textAlign:"center", marginBottom:14 }}>
+          <div style={{ textAlign:"center", marginBottom:20 }}>
             <span style={{ display:"inline-block", background:"#e8f5ee", borderRadius:20, padding:"5px 16px", fontSize:13, color:GREEN, fontWeight:600 }}>
               종이팩이 다시 태어나는 곳
             </span>
           </div>
 
-          <h1 style={{ fontSize:30, fontWeight:800, color:"#0a1a2e", lineHeight:1.2, marginBottom:20, textAlign:"center" }}>
+          <h1 style={{ fontSize:30, fontWeight:800, color:"#0a1a2e", lineHeight:1.2, marginBottom:28, textAlign:"center" }}>
             {data.cafe}
           </h1>
 
