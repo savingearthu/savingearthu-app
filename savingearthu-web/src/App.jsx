@@ -321,7 +321,7 @@ function CafePage({ data }) {
           <div style={{ width:36, height:4, background:"#ddd", borderRadius:2 }}/>
         </div>
 
-        <div style={{ flex:1, overflowY:"auto", padding:"6px 20px 48px", WebkitOverflowScrolling:"touch" }}>
+        <div style={{ flex:1, overflowY:"auto", padding:"16px 20px 48px", WebkitOverflowScrolling:"touch" }}>
 
           <div style={{ textAlign:"center", marginBottom:14 }}>
             <img src="/sticker6.png" alt="" style={{ width:120 }}/>
